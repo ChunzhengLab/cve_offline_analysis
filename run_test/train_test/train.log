@@ -1,0 +1,297 @@
+=========================================
+############## PATH : ##############
+/Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/treelite/8498081-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/RooUnfold/V02-00-01-alice6-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/AliRoot/a26cf348e14a7924f4c6cfb61f32c60d49cae5f8_O2-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/libwebsockets/v4.3.2-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/xjalienfs/1.6.6-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/GEANT4_VMC/v6-6-p3-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/GEANT4/v11.2.0-alice1-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/fastjet/v3.4.1_1.052-alice3-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/cgal/4.12.2-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/DPMJET/v19.3.7-alice1-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/ROOT/v6-32-06-alice7-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/TBB/v2021.5.0-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/XRootD/v5.8.0-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/AliEn-Runtime/v2-19-le-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/FFTW3/v3.3.9-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/pythia/v8311-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/HepMC/HEPMC_02_06_10-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/lhapdf/v6.5.2-local3/bin:/Users/wangchunzheng/alice/sw/osx_arm64/Python-modules/1.0-local2/bin:/Users/wangchunzheng/alice/sw/osx_arm64/hdf5/1.10.9-local1/bin:/Users/wangchunzheng/alice/sw/osx_arm64/protobuf/v29.3-local1/bin:/opt/homebrew/opt/jpeg/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/wangchunzheng/.cargo/bin
+############## LD_LIBRARY_PATH : ##############
+.:/Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/KFParticle/v1.1-5-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/treelite/8498081-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/RooUnfold/V02-00-01-alice6-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/AliRoot/a26cf348e14a7924f4c6cfb61f32c60d49cae5f8_O2-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/JAliEn-ROOT/0.7.14-local3/lib:/Users/wangchunzheng/alice/sw/osx_arm64/libwebsockets/v4.3.2-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/GEANT4_VMC/v6-6-p3-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/vgm/v5-3-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/GEANT4/v11.2.0-alice1-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/xercesc/Xerces-C_3_2_5-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/ZeroMQ/v4.3.5-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/GEANT3/v4-4-local2/lib64:/Users/wangchunzheng/alice/sw/osx_arm64/VMC/v2-0-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/fastjet/v3.4.1_1.052-alice3-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/GMP/v6.2.1-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/cgal/4.12.2-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/DPMJET/v19.3.7-alice1-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/ROOT/v6-32-06-alice7-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/TBB/v2021.5.0-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/XRootD/v5.8.0-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/Vc/1.4.5-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/AliEn-Runtime/v2-19-le-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/FFTW3/v3.3.9-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/pythia/v8311-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/HepMC/HEPMC_02_06_10-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/lhapdf/v6.5.2-local3/lib:/Users/wangchunzheng/alice/sw/osx_arm64/arrow/v17.0.0-alice6-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/xsimd/8.1.0-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/boost/v1.83.0-alice2-local2/lib:/Users/wangchunzheng/alice/sw/osx_arm64/hdf5/1.10.9-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/utf8proc/v2.6.1-local1/lib:/Users/wangchunzheng/alice/sw/osx_arm64/protobuf/v29.3-local1/lib
+############## ROOTSYS : ##############
+/Users/wangchunzheng/alice/sw/osx_arm64/ROOT/v6-32-06-alice7-local2
+############## which root : ##############
+/Users/wangchunzheng/alice/sw/osx_arm64/ROOT/v6-32-06-alice7-local2/bin/root
+############## ALICE_ROOT : ##############
+/Users/wangchunzheng/alice/sw/osx_arm64/AliRoot/a26cf348e14a7924f4c6cfb61f32c60d49cae5f8_O2-local2
+############## which aliroot : ##############
+/Users/wangchunzheng/alice/sw/osx_arm64/AliRoot/a26cf348e14a7924f4c6cfb61f32c60d49cae5f8_O2-local2/bin/aliroot
+############## system limits : ##############
+core file size              (blocks, -c) 0
+data seg size               (kbytes, -d) unlimited
+file size                   (blocks, -f) unlimited
+max locked memory           (kbytes, -l) unlimited
+max memory size             (kbytes, -m) unlimited
+open files                          (-n) 2560
+pipe size                (512 bytes, -p) 1
+stack size                  (kbytes, -s) 8176
+cpu time                   (seconds, -t) unlimited
+max user processes                  (-u) 2666
+virtual memory              (kbytes, -v) unlimited
+############## memory : ##############
+MemRegions: 346239 total, 3962M resident, 336M private, 2266M shared.
+PhysMem: 15G used (2005M wired, 4651M compressor), 567M unused.
+VM: 336T vsize, 5709M framework vsize, 0(0) swapins, 0(0) swapouts.
+=========================================
+   ------------------------------------------------------------------
+  | Welcome to ROOT 6.32.06                        https://root.cern |
+  | (c) 1995-2024, The ROOT Team; conception: R. Brun, F. Rademakers |
+  | Built for macosxarm64 on Jun 05 2025, 14:42:56                   |
+  | From tags/v6-32-06-alice7@v6-32-06-alice7                        |
+  | With Apple clang version 17.0.0 (clang-1700.0.13.5)              |
+  | Try '.help'/'.?', '.demo', '.license', '.credits', '.quit'/'.q'  |
+   ------------------------------------------------------------------
+
+
+Processing lego_train.C...
+W-TClass::Init: no dictionary for class pair<int,pair<float,float> > is available
+I-AliAnalysisAlien::SetDefaultOutputs: Plugin will use the output files taken from analysis manager
+I-AliAnalysisManager::PrintStatus: System information will be collected each 40 events
+=== TOP CONTAINER:
+Container: cAUTO_INPUT     DATA TYPE: TChain
+= Not connected to a data producer
+ = Client tasks indented below:
+______________________________________________________________________________
+   task: taskMultSelection  ACTIVE=0 POST_LOOP=0
+      INPUT #0: TChain <-  [cAUTO_INPUT]
+      OUTPUT #0: TTree ->  [NO CONTAINER]
+      OUTPUT #1: TList ->  [cListMultSelection]
+      Container: cListMultSelection     DATA TYPE: TList
+       = Filename: AnalysisResults.root  folder: MultSelection
+______________________________________________________________________________
+   task: AliPhysicsSelectionTask  ACTIVE=0 POST_LOOP=0
+      INPUT #0: TChain <-  [cAUTO_INPUT]
+      OUTPUT #0: TTree ->  [NO CONTAINER]
+      OUTPUT #1: TList ->  [cstatsout]
+      Container: cstatsout     DATA TYPE: TList
+       = Filename: EventStat_temp.root
+______________________________________________________________________________
+   task: PIDResponseTask  ACTIVE=0 POST_LOOP=0
+      INPUT #0: TChain <-  [cAUTO_INPUT]
+      OUTPUT #0: TTree ->  [NO CONTAINER]
+===== RUNNING LOCAL ANALYSIStrain ON CHAIN aodTree
+AliPhysicsSelectionTask::CreateOutputObjects
+I-AliTOFPIDResponse::LoadTOFtailHisto: Loaded TOF tail histogram from file $ALICE_ROOT/TOF/data/addTOFtail.root
+Initialization time: 0.21601 [sec]
+I-AliAnalysisTaskPIDResponse::ConnectInputData: fInputHandler: 0x13a416280
+I-AliPhysicsSelection::DetectPassName: pass name: pass3
+
+I-AliPhysicsSelection::Initialize: Initializing for run 295588
+I-AliPhysicsSelection::Initialize: Using Standard OADB
+Physics selection cut settings:
+  FMDLowCut            0.200000
+  FMDHitCut            0.500000
+  ZDCCutRefSum         -568.500000
+  ZDCCutRefDelta       -2.100000
+  ZDCCutSigmaSum       3.250000
+  ZDCCutSigmaDelta     2.250000
+  ZDCCutRefSumCorr     0.000000
+  ZDCCutRefDeltaCorr   0.000000
+  ZDCCutSigmaSumCorr   2.000000
+  ZDCCutSigmaDeltaCorr 2.000000
+  ZDCCutZNATimeCorrMin 5.000000
+  ZDCCutZNATimeCorrMax 100.000000
+  ZDCCutZNCTimeCorrMin 5.000000
+  ZDCCutZNCTimeCorrMax 100.000000
+  SPDClsVsTklA         65.000000
+  SPDClsVsTklB         4.000000
+  V0C012vsTklA         150.000000
+  V0C012vsTklB         20.000000
+  V0MOnVsOfA           0.000000
+  V0MOnVsOfB           0.000000
+  SPDOnVsOfA           0.000000
+  SPDOnVsOfB           0.000000
+  VtxMinContributors   5
+  VtxMinZdist          0.800000
+  VtxNSigmaZdist       3.000000
+  VtxNSigmaDiamXY      2.000000
+  VtxNSigmaDiamZ       5.000000
+  V0CasymA             0.000000
+  V0CasymB             0.000000
+  NBCsPast             4
+  NBCsFuture           7
+  VHMBBAflags          -1
+  VHMBBCflags          -1
+  VHMBGAflags          33
+  VHMBGCflags          33
+  VIRBBAflags          33
+  VIRBBCflags          33
+  VIRBGAflags          33
+  VIRBGCflags          33
+  V0MOnThreshold       -1
+  V0MOfThreshold       -1.000000
+  SPDGFOThreshold      2
+  SH1OuterThreshold    -1
+  SH2OuterThreshold    -1
+  TklThreshold         -1
+  TRDptHSE             3.000000
+  TRDpidHSE            144
+  TRDptHQU             2.000000
+  TRDpidHQU            164
+  TRDptHEE             3.000000
+  TRDpidHEE            144
+  TRDminSectorHEE      6
+  TRDmaxSectorHEE      8
+  TRDptHJT             3.000000
+  TRDnHJT              3
+Setting up automatic vertex-Z correction...
+Found vertex-Z calib profile for variable fAmplitude_V0A, profile name: hCalibVtx_fAmplitude_V0A
+Found vertex-Z calib profile for variable fAmplitude_V0C, profile name: hCalibVtx_fAmplitude_V0C
+Found vertex-Z calib profile for variable fAmplitude_V0AADC, profile name: hCalibVtx_fAmplitude_V0AADC
+Found vertex-Z calib profile for variable fAmplitude_V0CADC, profile name: hCalibVtx_fAmplitude_V0CADC
+Found vertex-Z calib profile for variable fnSPDClusters, profile name: hCalibVtx_fnSPDClusters
+Found vertex-Z calib profile for variable fnTracklets, profile name: hCalibVtx_fnTracklets
+Found vertex-Z calib profile for variable fRefMultEta5, profile name: hCalibVtx_fRefMultEta5
+Found vertex-Z calib profile for variable fRefMultEta8, profile name: hCalibVtx_fRefMultEta8
+Found vertex-Z calib profile for variable fMultiplicity_ADA, profile name: hCalibVtx_fMultiplicity_ADA
+Found vertex-Z calib profile for variable fMultiplicity_ADC, profile name: hCalibVtx_fMultiplicity_ADC
+Number of automatically calibrated inputs: 10
+AliMultSelection Name..: MultSelection
+Estimators defined.....: 13
+EvSel Code.............: 0
+N: V0M, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 90.1
+N: V0Mminus10, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 89.1
+N: V0Mminus05, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 89.6
+N: V0Mplus05, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 90.6
+N: V0Mplus10, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 91.1
+N: V0MNew, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 91.5
+N: V0MNewminus10, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 90.5
+N: V0MNewminus05, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 91
+N: V0MNewplus05, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 92
+N: V0MNewplus10, def: ((fAmplitude_V0A)+(fAmplitude_V0C)), at: 33839.9, Perc: 0, <> = 9253.59, AnchPoint = 165, AnchPerc = 92.5
+N: SPDTracklets, def: (fnTracklets), at: 3764.84, Perc: 0, <> = 1061.75, AnchPoint = 0, AnchPerc = 100
+N: CL0, def: (fnSPDClusters0), at: 7067, Perc: 0, <> = 2001.35, AnchPoint = 32, AnchPerc = 90.11
+N: CL1, def: (fnSPDClusters1), at: 6674, Perc: 0, <> = 1907.79, AnchPoint = 32, AnchPerc = 90.07
+Value of Cuts:
+ Vertex Z position.....................: [10.000000]
+ Physics Selection.....................: [1]
+ INEL > 0..............................: [0]
+ Tracklets vs Clusters.................: [0]
+ Reject Pileup SPD (mult bins).........: [0]
+ SPD and Track vertex consistency......: [0]
+ Non Zero NContribs to PV..............: [1]
+ Reject Asymmetric in VZERO events.....: [0]
+ Reject IsIncompleteDAQ................: [0]
+ Reject events if vtx not good (2016)..: [0]
+W-AliProdInfo::ParseProdInfo: ALIROOT SVN version number not decimal, might be on git. Reading as hex 07ade5 -> 503269
+W-AliProdInfo::ParseProdInfo: ROOT SVN version is not extracted, setting to 0
+I-AliProdInfo::List: ALICE Production Info found in UserInfo: 
+I-AliProdInfo::List:   ALIROOT Version         : 07ade5a [SVN #: 503269]
+I-AliProdInfo::List:   ROOT Version            : heads/v5-34-00-patches [SVN #: 0]
+I-AliProdInfo::List:   Reconstruction Pass     : 3
+I-AliProdInfo::List:   Reconstruction Pass Name: pass3
+I-AliProdInfo::List:   Run number              : 295588
+I-AliProdInfo::List:   ProductionTag           : LHC18q
+I-AliProdInfo::List:   MC Flag                 : 0
+I-AliProdInfo::List:   Anchor production:      : LHC18q
+I-AliProdInfo::List:   Anchor pass name:       : 
+I-AliProdInfo::List:   Anchor run:             : -1
+I-AliProdInfo::List:   - Buffered production tags:
+I-AliProdInfo::List:     07ade5a:07ade5a
+I-AliProdInfo::List:     heads/v5-34-00-patches:v5-34-28-57-gec27989
+I-AliProdInfo::List:     /alice/data/2018/LHC18q/000295588/pass3/#alienfilename/.root//#
+I-AliProdInfo::List:     3
+I-AliProdInfo::List:     RAW
+I-AliProdInfo::List:     LHC18q
+I-AliProdInfo::List:     295588
+ <message repeated 1 time>
+I-AliProdInfo::List:     LHC18q
+I-AliProdInfo::List:     
+I-AliAODpidUtil::InitializeTPCResponse: ---------------------------- TPC Response Configuration (New) ----------------------------
+I-AliTPCPIDResponse::InitFromOADB: ----------------------| Initialisation TPC PID Response from OADB |----------------------
+I-AliTPCPIDResponse::InitFromOADB: ----------------------| Run: 295588, pass: 3 - pass3            |----------------------
+I-AliTPCPIDResponse::InitFromOADB: ---| Selected OADB file: /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TPCPIDResponseOADB.root |---
+I-AliTPCPIDResponse::InitFromOADB: Trying to load splines for specific pass name pass3.
+E-AliOADBContainer::GetObject: Default Object (TPCSplines) not found !
+
+I-AliTPCPIDResponse::InitFromOADB: No dedicated splines found for 'pass3', check numerical pass 3.
+I-AliTPCPIDResponse::InitFromOADB: Trying to load splines for specific reconstruction pass 3.
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 0 - TSPLINE3_DATA_ELECTRON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = db4c5920ebfe3887e153b88f32af981d)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 1 - TSPLINE3_DATA_PION_LHC18q_pass3_PBPB_MEAN (MD5(spline) = 1d801871a111f314892130ee75b05511)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 2 - TSPLINE3_DATA_PION_LHC18q_pass3_PBPB_MEAN (MD5(spline) = 1d801871a111f314892130ee75b05511)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 3 - TSPLINE3_DATA_KAON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = b1af47fc9f3b3e707155f0155db0b2cb)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 4 - TSPLINE3_DATA_PROTON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = beed80c3aa8a584b7b7a494b89e6b6d4)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 5 - TSPLINE3_DATA_DEUTERON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = 1042417cf54fbbee28a97f63b9319105)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 6 - TSPLINE3_DATA_PROTON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = beed80c3aa8a584b7b7a494b89e6b6d4)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 7 - TSPLINE3_DATA_PROTON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = beed80c3aa8a584b7b7a494b89e6b6d4)
+I-AliTPCPIDResponse::SetSplinesFromArray: Adding spline: 8 - TSPLINE3_DATA_PROTON_LHC18q_pass3_PBPB_MEAN (MD5(spline) = beed80c3aa8a584b7b7a494b89e6b6d4)
+I-AliTPCPIDResponse::SetMultiplicityCorrectionFromString: Setting multiplicity correction parameters for mean; tan theta; sigma: -8.380154e-07,-7.256705e-04;-8.470512e-11,3.962163e-08;3.059448e-05,-1.680301e-02,6.367439e-01,1.163613e-02
+I-AliTPCPIDResponse::InitFromOADB: Setting multiplicity estimator 1 (kNTPCTrackBeforeClean)
+I-AliAODpidUtil::InitializeTPCResponse: Pilup correction requested, but not configured in OADB. Most probably this is ok. Dactivating the pileup correction
+I-AliAODpidUtil::InitializeTPCResponse: ------------------------------------------------------------------------------------------
+I-AliAODpidUtil::SetTPCEtaMaps: Current period and reco pass: LHC15F.pass3 (pass3)
+I-AliAODpidUtil::SetTPCEtaMaps: Trying to load map container for specific pass name pass3.
+I-AliAODpidUtil::SetTPCEtaMaps: Dedicated map container for 'pass3' found.
+I-AliAODpidUtil::SetTPCEtaMaps: Loading TPC eta correction map from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TPCetaMaps.root (TPCetaMaps_DATA_pass3)
+I-AliAODpidUtil::SetTPCEtaMaps: Loaded TPC eta correction map (refine factors 6.00/6.00) from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TPCetaMaps.root: LHC18q.pass3 (refined) (MD5(map) = 9d543fdc2a53552250c6c5debf648823)
+I-AliAODpidUtil::SetTPCEtaMaps: Trying to load sigma map container for specific pass name pass3.
+I-AliAODpidUtil::SetTPCEtaMaps: Dedicated sigma map container for 'pass3' found.
+I-AliAODpidUtil::SetTPCEtaMaps: Loading TPC eta sigma map from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TPCetaMaps.root (TPCetaSigmaMaps_DATA_pass3)
+I-AliAODpidUtil::SetTPCEtaMaps: Loaded TPC sigma correction map (refine factors 6.00/6.00) from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TPCetaMaps.root: LHC18q.pass3 (refined) (MD5(map) = 53729bdac57ed103978868353faf4b46, sigmaPar0 = 0.000000)
+I-AliAODpidUtil::SetTRDPidResponseMaster: Loading TRD Response from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TRDPIDResponse.root
+E-AliTRDPIDResponseObject::GetThresholdParameters: TRD Threshold Container does not exist
+I-AliAODpidUtil::CheckTRDLikelihoodParameter: No Params for TRD Likelihood Threshold Parameters Found for Charge Dependence
+I-AliAODpidUtil::CheckTRDLikelihoodParameter: Using Parameters for both charges
+E-AliTRDPIDResponseObject::GetThresholdParameters: TRD Threshold Container does not exist
+E-AliAODpidUtil::CheckTRDLikelihoodParameter: No Params TRD Likelihood Threshold Parameters Found!!
+I-AliAODpidUtil::SetTRDdEdxParams: Loading TRDdEdxParamsContainer from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TRDdEdxParams.root
+
+E-AliOADBContainer::GetObject: Default Object (TRDdEdxParamsContainer) not found !
+
+E-AliAODpidUtil::SetTRDdEdxParams: TRD dEdx Params default not found
+I-AliAODpidUtil::SetTRDEtaMaps: Loading TRDCorrectionMaps from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TRDdEdxCorrectionMaps.root
+
+E-AliOADBContainer::GetObject: Default Object (TRDCorrectionMaps) not found !
+
+E-AliAODpidUtil::SetTRDEtaMaps: TRD Eta Correction Params not found
+I-AliAODpidUtil::SetTRDClusterMaps: Loading TRDCorrectionMaps from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TRDdEdxCorrectionMaps.root
+
+E-AliOADBContainer::GetObject: Default Object (TRDCorrectionMaps) not found !
+
+E-AliAODpidUtil::SetTRDClusterMaps: TRD Cluster Correction Params not found
+I-AliAODpidUtil::SetTRDCentralityMaps: Loading TRDCorrectionMaps from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TRDdEdxCorrectionMaps.root
+
+E-AliOADBContainer::GetObject: Default Object (TRDCorrectionMaps) not found !
+
+I-AliAODpidUtil::SetTRDCentralityMaps: TRD Centrality Correction Params not found
+I-AliAODpidUtil::SetTOFPidResponseMaster: Loading TOF Params from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/TOFPIDParams.root for run 295588 (pass: pass3)
+I-AliAODpidUtil::InitializeTOFResponse: ---------------------------- TOF Response Configuration ----------------------------
+I-AliAODpidUtil::InitializeTOFResponse: TOF PID Params loaded from OADB [entryTag: LHC18qr-pass3]
+I-AliAODpidUtil::InitializeTOFResponse:   TOF resolution 60.00 [ps]
+I-AliAODpidUtil::InitializeTOFResponse:   StartTime method 1
+I-AliAODpidUtil::InitializeTOFResponse:   TOF res. mom. params:  0.004  0.000  0.009 15.000
+I-AliAODpidUtil::InitializeTOFResponse:   Start Time Offset   0.00 ps
+I-AliAODpidUtil::InitializeTOFResponse:   Fraction of tracks within gaussian behaviour: 0.9500
+I-AliAODpidUtil::InitializeTOFResponse:   MC: Fraction of tracks (percentage) to cut to fit matching in data:   0.00%
+I-AliAODpidUtil::InitializeTOFResponse:   MC: Fraction of random hits (percentage) to add to fit mismatch in data:   2.50%
+I-AliAODpidUtil::InitializeTOFResponse: TZERO resolution loaded from ESDrun/AODheader
+I-AliAODpidUtil::InitializeTOFResponse:   TZERO spreads from data: (A+C)/2 197.864655 A 201.266907 C 201.672958 (A'-C')/2: 30.641333
+I-AliAODpidUtil::InitializeTOFResponse:   TZERO resolution set to: T0A: 47.925327 [ps] T0C: 49.602940 [ps] T0AC 30.641333 [ps]
+I-AliAODpidUtil::InitializeTOFResponse: ------------------------------------------------------------------------------------
+I-AliAODpidUtil::SetEMCALPidResponseMaster: Loading EMCAL Params from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/EMCALPIDParams.root
+E-AliOADBContainer::GetObject: Default Object (AliEMCALPIDParams) not found !
+
+I-AliAODpidUtil::SetEMCALPidResponseMaster: EMCAL Params not found in run 295588 pass 3
+I-AliAODpidUtil::SetEMCALPidResponseMaster: Will take the standard LHC11d instead ...
+I-AliAODpidUtil::SetHMPIDPidResponseMaster: Loading HMPID Params from /Users/wangchunzheng/alice/sw/osx_arm64/AliPhysics/0_O2-local2/OADB/COMMON/PID/data/HMPIDPIDParams.root
+Collection name='TObjArray', class='TObjArray', size=16
+ ===== Logical file name: /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root =====
+      Pfn: /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+      url: /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+      access time: 1749732636 from SE: local  image 0/0
+      open time: 0 [sec]
+      file size: 545.056 [MB],  read size: 621.065 [MB]
+      processing time [sec]: 12.2191
+      average throughput: 50.8273 [MB/sec]
+ ===== Logical file name: /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root =====
+      Pfn: /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+      url: /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+      access time: 1749732648 from SE: local  image 0/0
+      open time: 0 [sec]
+      file size: 545.056 [MB],  read size: 544.322 [MB]
+      processing time [sec]: 10.8617
+      average throughput: 50.114 [MB/sec]
+=Analysis train= init time:       0.331652[sec]            
+              I/O & data mng.: 15.708 [sec]            
+              task execution: 7.42579 [sec]            
+              total time:     CPU=18.05 [sec]  REAL=23.4655[sec]
+=Analysis train= Terminate time:  0.251353[sec]
+Real time 0:00:23, CP time 18.430
+======== lego_train.C finished with exit code: 0 ========
+############## memory after: ##############
+./lego_train.sh: line 40: free: command not found

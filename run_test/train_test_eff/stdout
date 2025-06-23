@@ -1,0 +1,559 @@
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:42:48 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 2864
+drwxr-xr-x  27 wangchunzheng  staff     864 Jun  6 01:42 .
+drwxr-xr-x   5 wangchunzheng  staff     160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff  571674 Jun  6 01:42 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff  697452 Jun  6 01:42 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff    1709 May 31 00:55 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff     152 May 30 00:07 data.txt
+-rwxr-xr-x   1 wangchunzheng  staff    1634 May 30 00:07 env.sh
+-rw-r--r--@  1 wangchunzheng  staff    1040 Jun  6 01:42 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff    7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff    5435 Jun  6 01:42 generation.log
+-rw-r--r--   1 wangchunzheng  staff       5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff     317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff    1173 Jun  6 01:42 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff   52366 Jun  6 01:42 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff    1408 Jun  6 01:42 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff    2478 Jun  6 01:42 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff    1367 Jun  6 01:42 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff    2721 Jun  6 01:42 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff    2308 Jun  6 01:42 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff       0 Jun  6 01:42 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff      90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff     767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff     301 Jun  6 01:42 stdout
+-rw-r--r--@  1 wangchunzheng  staff   16101 Jun  6 01:42 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff   13543 Jun  6 01:42 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff   25962 Jun  6 01:42 train.log
+-rw-r--r--   1 wangchunzheng  staff       0 Jun  6 01:42 validation.log
+* ----------------------------------------------------*
+* ########## Job not validated - no stderr  ###
+Error = 1
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:43:43 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 2848
+drwxr-xr-x  26 wangchunzheng  staff     832 Jun  6 01:43 .
+drwxr-xr-x   5 wangchunzheng  staff     160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff  571674 Jun  6 01:42 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff  697452 Jun  6 01:42 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff    1709 Jun  6 01:43 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff     152 May 30 00:07 data.txt
+-rwxr-xr-x   1 wangchunzheng  staff    1634 May 30 00:07 env.sh
+-rw-r--r--@  1 wangchunzheng  staff    1040 Jun  6 01:42 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff    7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff    5435 Jun  6 01:43 generation.log
+-rw-r--r--   1 wangchunzheng  staff       5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff     317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff    1173 Jun  6 01:43 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff   52367 Jun  6 01:43 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff    1408 Jun  6 01:43 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff    2478 Jun  6 01:43 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff    1367 Jun  6 01:43 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff    2721 Jun  6 01:43 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff    2308 Jun  6 01:43 lego_train_validation_merge.sh
+-rwxr-xr-x   1 wangchunzheng  staff      90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff     767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff    2761 Jun  6 01:43 stdout
+-rw-r--r--@  1 wangchunzheng  staff    2126 Jun  6 01:43 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff   13543 Jun  6 01:42 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff   29475 Jun  6 01:43 train.log
+-rw-r--r--   1 wangchunzheng  staff       0 Jun  6 01:43 validation.log
+* ----------------------------------------------------*
+* ########## Job not validated - no stderr  ###
+Error = 1
+Output files were not validated by the analysis manager
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:48:16 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 2864
+drwxr-xr-x  27 wangchunzheng  staff     864 Jun  6 01:48 .
+drwxr-xr-x   5 wangchunzheng  staff     160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff  571674 Jun  6 01:42 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff  697452 Jun  6 01:42 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff    1709 Jun  6 01:43 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff     152 May 30 00:07 data.txt
+-rwxr-xr-x   1 wangchunzheng  staff    1634 May 30 00:07 env.sh
+-rw-r--r--@  1 wangchunzheng  staff    1040 Jun  6 01:42 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff    7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff    5435 Jun  6 01:48 generation.log
+-rw-r--r--   1 wangchunzheng  staff       5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff     317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff    1173 Jun  6 01:48 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff   52367 Jun  6 01:48 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff    1408 Jun  6 01:48 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff    2478 Jun  6 01:48 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff    1367 Jun  6 01:48 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff    2721 Jun  6 01:48 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff    2308 Jun  6 01:48 lego_train_validation_merge.sh
+-rwxr-xr-x   1 wangchunzheng  staff      90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff     767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff      56 Jun  6 01:43 stderr
+-rw-r--r--@  1 wangchunzheng  staff    5206 Jun  6 01:48 stdout
+-rw-r--r--@  1 wangchunzheng  staff    2129 Jun  6 01:48 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff   13543 Jun  6 01:42 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff   29649 Jun  6 01:48 train.log
+-rw-r--r--   1 wangchunzheng  staff       0 Jun  6 01:48 validation.log
+* ----------------------------------------------------*
+Output files were not validated by the analysis manager
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:50:13 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 3632
+drwxr-xr-x  28 wangchunzheng  staff     896 Jun  6 01:50 .
+drwxr-xr-x   5 wangchunzheng  staff     160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff  783924 Jun  6 01:50 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff  697455 Jun  6 01:50 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff    1709 Jun  6 01:43 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff     152 May 30 00:07 data.txt
+-rwxr-xr-x   1 wangchunzheng  staff    1634 May 30 00:07 env.sh
+-rw-r--r--@  1 wangchunzheng  staff    2081 Jun  6 01:50 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff    7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff    5435 Jun  6 01:50 generation.log
+-rw-r--r--   1 wangchunzheng  staff       5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff     317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff    1173 Jun  6 01:50 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff   52367 Jun  6 01:50 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff    1408 Jun  6 01:50 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff    2478 Jun  6 01:50 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff    1367 Jun  6 01:50 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff    2721 Jun  6 01:50 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff    2308 Jun  6 01:50 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff       0 Jun  6 01:50 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff      90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff     767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff     112 Jun  6 01:48 stderr
+-rw-r--r--@  1 wangchunzheng  staff    7657 Jun  6 01:50 stdout
+-rw-r--r--@  1 wangchunzheng  staff   16114 Jun  6 01:50 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff   13683 Jun  6 01:50 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff  155940 Jun  6 01:50 train.log
+-rw-r--r--   1 wangchunzheng  staff       0 Jun  6 01:50 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:53:10 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 28880
+drwxr-xr-x  28 wangchunzheng  staff       896 Jun  6 01:53 .
+drwxr-xr-x   5 wangchunzheng  staff       160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff     81491 Jun  6 01:53 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff    697459 Jun  6 01:53 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff      1649 Jun  6 01:52 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff       152 May 30 00:07 data.txt
+-rwxr-xr-x   1 wangchunzheng  staff      1634 May 30 00:07 env.sh
+-rw-r--r--@  1 wangchunzheng  staff      3121 Jun  6 01:53 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff      7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff      5502 Jun  6 01:53 generation.log
+-rw-r--r--   1 wangchunzheng  staff         5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff       317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff      1173 Jun  6 01:53 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  13819717 Jun  6 01:53 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff      1408 Jun  6 01:53 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff      2478 Jun  6 01:53 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff      1367 Jun  6 01:53 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff      2721 Jun  6 01:53 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff      2308 Jun  6 01:53 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff         0 Jun  6 01:53 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff        90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff       767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff       112 Jun  6 01:48 stderr
+-rw-r--r--@  1 wangchunzheng  staff     10179 Jun  6 01:53 stdout
+-rw-r--r--@  1 wangchunzheng  staff     16113 Jun  6 01:53 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff     13583 Jun  6 01:53 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff     57532 Jun  6 01:53 train.log
+-rw-r--r--   1 wangchunzheng  staff         0 Jun  6 01:53 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:53:32 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 28784
+drwxr-xr-x  28 wangchunzheng  staff       896 Jun  6 01:53 .
+drwxr-xr-x   5 wangchunzheng  staff       160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff     81491 Jun  6 01:53 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff    697459 Jun  6 01:53 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff      1649 Jun  6 01:52 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff       174 Jun  1 00:21 data.txt
+-rw-r--r--   1 wangchunzheng  staff       152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff      1634 May 30 00:07 env.sh
+-rw-r--r--@  1 wangchunzheng  staff      3121 Jun  6 01:53 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff      7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff      5502 Jun  6 01:53 generation.log
+-rw-r--r--   1 wangchunzheng  staff         5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff       317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff      1173 Jun  6 01:53 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  13819717 Jun  6 01:53 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff      1408 Jun  6 01:53 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff      2478 Jun  6 01:53 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff      1367 Jun  6 01:53 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff      2721 Jun  6 01:53 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff      2308 Jun  6 01:53 lego_train_validation_merge.sh
+-rwxr-xr-x   1 wangchunzheng  staff        90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff       767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff       112 Jun  6 01:48 stderr
+-rw-r--r--@  1 wangchunzheng  staff     12758 Jun  6 01:53 stdout
+-rw-r--r--@  1 wangchunzheng  staff      2139 Jun  6 01:53 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff     13583 Jun  6 01:53 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff     13795 Jun  6 01:53 train.log
+-rw-r--r--   1 wangchunzheng  staff         0 Jun  6 01:53 validation.log
+* ----------------------------------------------------*
+Output files were not validated by the analysis manager
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:54:34 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 28792
+drwxr-xr-x  29 wangchunzheng  staff       928 Jun  6 01:54 .
+drwxr-xr-x   5 wangchunzheng  staff       160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff     81491 Jun  6 01:53 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff    697459 Jun  6 01:53 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff      1649 Jun  6 01:52 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff       174 Jun  1 00:21 data.txt
+-rw-r--r--   1 wangchunzheng  staff       152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff      1859 Jun  6 01:54 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff      1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff      3121 Jun  6 01:53 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff      7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff      5510 Jun  6 01:54 generation.log
+-rw-r--r--   1 wangchunzheng  staff         5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff       317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff      1173 Jun  6 01:54 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  13819717 Jun  6 01:54 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff      1408 Jun  6 01:54 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff      2473 Jun  6 01:54 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff      1367 Jun  6 01:54 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff      2721 Jun  6 01:54 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff      2308 Jun  6 01:54 lego_train_validation_merge.sh
+-rwxr-xr-x   1 wangchunzheng  staff        90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff       767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff       168 Jun  6 01:53 stderr
+-rw-r--r--@  1 wangchunzheng  staff     15335 Jun  6 01:54 stdout
+-rw-r--r--@  1 wangchunzheng  staff      2114 Jun  6 01:54 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff     13583 Jun  6 01:53 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff     13795 Jun  6 01:54 train.log
+-rw-r--r--   1 wangchunzheng  staff         0 Jun  6 01:54 validation.log
+* ----------------------------------------------------*
+Output files were not validated by the analysis manager
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 01:56:36 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 30176
+drwxr-xr-x  30 wangchunzheng  staff       960 Jun  6 01:56 .
+drwxr-xr-x   5 wangchunzheng  staff       160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff    249382 Jun  6 01:56 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff    771050 Jun  6 01:56 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff      1634 Jun  6 01:56 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff       174 Jun  1 00:21 data.txt
+-rw-r--r--   1 wangchunzheng  staff       152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff      1859 Jun  6 01:54 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff      1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff      4206 Jun  6 01:56 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff      7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff      5499 Jun  6 01:56 generation.log
+-rw-r--r--   1 wangchunzheng  staff         5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff       317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff      1173 Jun  6 01:56 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  13819716 Jun  6 01:56 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff      1408 Jun  6 01:56 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff      2473 Jun  6 01:56 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff      1367 Jun  6 01:56 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff      2721 Jun  6 01:56 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff      2308 Jun  6 01:56 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff         0 Jun  6 01:56 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff        90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff       767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff       224 Jun  6 01:54 stderr
+-rw-r--r--@  1 wangchunzheng  staff     17981 Jun  6 01:56 stdout
+-rw-r--r--@  1 wangchunzheng  staff    115856 Jun  6 01:56 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff     27478 Jun  6 01:56 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff    291963 Jun  6 01:56 train.log
+-rw-r--r--   1 wangchunzheng  staff         0 Jun  6 01:56 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 19:18:56 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 29584
+drwxr-xr-x  30 wangchunzheng  staff       960 Jun  6 19:18 .
+drwxr-xr-x   5 wangchunzheng  staff       160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff    249382 Jun  6 19:18 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff    771050 Jun  6 19:18 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff      1634 Jun  6 01:56 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff       174 Jun  1 00:21 data.txt
+-rw-r--r--   1 wangchunzheng  staff       152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff      1859 Jun  6 01:54 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff      1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff      5324 Jun  6 19:18 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff      7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff      5495 Jun  6 19:18 generation.log
+-rw-r--r--   1 wangchunzheng  staff         5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff       317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff      1173 Jun  6 19:18 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  13819726 Jun  6 19:18 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff      1408 Jun  6 19:18 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff      2473 Jun  6 19:18 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff      1367 Jun  6 19:18 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff      2721 Jun  6 19:18 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff      2308 Jun  6 19:18 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff         0 Jun  6 19:18 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff        90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff       767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff       224 Jun  6 01:54 stderr
+-rw-r--r--@  1 wangchunzheng  staff     20700 Jun  6 19:18 stdout
+-rw-r--r--@  1 wangchunzheng  staff    129078 Jun  6 19:18 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff     27546 Jun  6 19:18 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff     24212 Jun  6 19:18 train.log
+-rw-r--r--   1 wangchunzheng  staff         0 Jun  6 19:18 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 19:20:47 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 21912
+drwxr-xr-x  30 wangchunzheng  staff      960 Jun  6 19:20 .
+drwxr-xr-x   5 wangchunzheng  staff      160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff   197200 Jun  6 19:20 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff   746045 Jun  6 19:20 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff     1634 Jun  6 19:20 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff      168 Jun  6 19:20 data.txt
+-rw-r--r--   1 wangchunzheng  staff      152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff     1859 Jun  6 01:54 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff     1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff     6427 Jun  6 19:20 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff     7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff     5495 Jun  6 19:20 generation.log
+-rw-r--r--   1 wangchunzheng  staff        5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff      317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff     1173 Jun  6 19:20 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  9965756 Jun  6 19:20 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff     1408 Jun  6 19:20 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff     2473 Jun  6 19:20 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff     1367 Jun  6 19:20 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff     2721 Jun  6 19:20 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff     2308 Jun  6 19:20 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff        0 Jun  6 19:20 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff       90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff      767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff      224 Jun  6 01:54 stderr
+-rw-r--r--@  1 wangchunzheng  staff    23419 Jun  6 19:20 stdout
+-rw-r--r--@  1 wangchunzheng  staff    89949 Jun  6 19:20 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff    22921 Jun  6 19:20 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff    23877 Jun  6 19:20 train.log
+-rw-r--r--   1 wangchunzheng  staff        0 Jun  6 19:20 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 19:27:54 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 2952
+drwxr-xr-x  30 wangchunzheng  staff     960 Jun  6 19:27 .
+drwxr-xr-x   5 wangchunzheng  staff     160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff  571674 Jun  6 19:27 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff  697452 Jun  6 19:27 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff    1713 Jun  6 19:26 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff     152 May 30 00:07 data.txt
+-rw-r--r--   1 wangchunzheng  staff     168 Jun  6 19:20 data_data.txt
+-rwxr-xr-x   1 wangchunzheng  staff    1859 Jun  6 01:54 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff    1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff    7499 Jun  6 19:27 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff    7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff    5451 Jun  6 19:27 generation.log
+-rw-r--r--   1 wangchunzheng  staff       5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff     317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff    1173 Jun  6 19:27 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff   52369 Jun  6 19:27 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff    1408 Jun  6 19:27 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff    2473 Jun  6 19:27 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff    1367 Jun  6 19:27 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff    2721 Jun  6 19:27 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff    2308 Jun  6 19:27 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff       0 Jun  6 19:27 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff      90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff     767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff     224 Jun  6 01:54 stderr
+-rw-r--r--@  1 wangchunzheng  staff   26108 Jun  6 19:27 stdout
+-rw-r--r--@  1 wangchunzheng  staff   18036 Jun  6 19:27 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff   13707 Jun  6 19:27 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff   25958 Jun  6 19:27 train.log
+-rw-r--r--   1 wangchunzheng  staff       0 Jun  6 19:27 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 19:28:39 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 3600
+drwxr-xr-x  30 wangchunzheng  staff     960 Jun  6 19:28 .
+drwxr-xr-x   5 wangchunzheng  staff     160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff  784339 Jun  6 19:28 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff  697455 Jun  6 19:28 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff    1713 Jun  6 19:28 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff     152 May 30 00:07 data.txt
+-rw-r--r--   1 wangchunzheng  staff     168 Jun  6 19:20 data_data.txt
+-rwxr-xr-x   1 wangchunzheng  staff    1859 Jun  6 01:54 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff    1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff    8571 Jun  6 19:28 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff    7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff    5451 Jun  6 19:28 generation.log
+-rw-r--r--   1 wangchunzheng  staff       5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff     317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff    1173 Jun  6 19:28 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff   52369 Jun  6 19:28 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff    1408 Jun  6 19:28 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff    2473 Jun  6 19:28 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff    1367 Jun  6 19:28 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff    2721 Jun  6 19:28 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff    2308 Jun  6 19:28 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff       0 Jun  6 19:28 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff      90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff     767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff     224 Jun  6 01:54 stderr
+-rw-r--r--@  1 wangchunzheng  staff   28768 Jun  6 19:28 stdout
+-rw-r--r--@  1 wangchunzheng  staff   18092 Jun  6 19:28 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff   13864 Jun  6 19:28 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff  114120 Jun  6 19:28 train.log
+-rw-r--r--   1 wangchunzheng  staff       0 Jun  6 19:28 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 19:46:01 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 22680
+drwxr-xr-x  29 wangchunzheng  staff      928 Jun  6 19:45 .
+drwxr-xr-x   5 wangchunzheng  staff      160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff   784339 Jun  6 19:28 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff   697455 Jun  6 19:28 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff     1638 Jun  6 19:44 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff      168 Jun  6 19:20 data_data.txt
+-rw-r--r--   1 wangchunzheng  staff      152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff     1718 Jun  6 19:45 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff     1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff     8571 Jun  6 19:28 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff     7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff     5457 Jun  6 19:45 generation.log
+-rw-r--r--   1 wangchunzheng  staff        5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff      317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff     1173 Jun  6 19:45 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  9965756 Jun  6 19:45 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff     1408 Jun  6 19:45 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff     2473 Jun  6 19:45 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff     1367 Jun  6 19:45 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff     2721 Jun  6 19:45 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff     2308 Jun  6 19:45 lego_train_validation_merge.sh
+-rwxr-xr-x   1 wangchunzheng  staff       90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff      767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff      224 Jun  6 01:54 stderr
+-rw-r--r--@  1 wangchunzheng  staff    31428 Jun  6 19:46 stdout
+-rw-r--r--@  1 wangchunzheng  staff      678 Jun  6 19:46 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff    13864 Jun  6 19:28 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff     7927 Jun  6 19:46 train.log
+-rw-r--r--   1 wangchunzheng  staff        0 Jun  6 19:46 validation.log
+* ----------------------------------------------------*
+Output files were not validated by the analysis manager
+* ----------------------------------------------------*
+*******************************************************
+*******************************************************
+* Automatically generated validation script           *
+* Time:    Fri Jun  6 19:47:22 CEST 2025 
+* Dir:     .
+* Workdir: /Users/wangchunzheng/works/Experiments/cve/run_test/train_test_eff
+* ----------------------------------------------------*
+total 21944
+drwxr-xr-x  30 wangchunzheng  staff      960 Jun  6 19:47 .
+drwxr-xr-x   5 wangchunzheng  staff      160 Jun  1 01:05 ..
+-rw-r--r--@  1 wangchunzheng  staff   197200 Jun  6 19:47 AnalysisResults.root
+-rw-r--r--@  1 wangchunzheng  staff   746045 Jun  6 19:47 EventStat_temp.root
+-rw-r--r--   1 wangchunzheng  staff     1638 Jun  6 19:44 MLTrainDefinition.cfg
+-rw-r--r--   1 wangchunzheng  staff      168 Jun  6 19:20 data.txt
+-rw-r--r--   1 wangchunzheng  staff      152 May 30 00:07 data_mc.txt
+-rwxr-xr-x   1 wangchunzheng  staff     1718 Jun  6 19:45 env.sh
+-rwxr-xr-x   1 wangchunzheng  staff     1634 May 30 00:07 env_mc.sh
+-rw-r--r--@  1 wangchunzheng  staff     9675 Jun  6 19:47 fileinfo.log
+-rw-r--r--   1 wangchunzheng  staff     7505 May 24 02:16 generate.C
+-rw-r--r--   1 wangchunzheng  staff     5457 Jun  6 19:46 generation.log
+-rw-r--r--   1 wangchunzheng  staff        5 May 23 18:49 globalvariables.C
+-rw-r--r--   1 wangchunzheng  staff      317 May 23 18:55 handlers.C
+-rw-r--r--@  1 wangchunzheng  staff     1173 Jun  6 19:46 lego_train.C
+-rw-r--r--@  1 wangchunzheng  staff  9965756 Jun  6 19:46 lego_train.root
+-rwxr--r--@  1 wangchunzheng  staff     1408 Jun  6 19:46 lego_train.sh
+-rw-r--r--@  1 wangchunzheng  staff     2473 Jun  6 19:46 lego_train_merge.C
+-rw-r--r--@  1 wangchunzheng  staff     1367 Jun  6 19:46 lego_train_merge.sh
+-rwxr--r--@  1 wangchunzheng  staff     2721 Jun  6 19:46 lego_train_validation.sh
+-rw-r--r--@  1 wangchunzheng  staff     2308 Jun  6 19:46 lego_train_validation_merge.sh
+-rw-r--r--@  1 wangchunzheng  staff        0 Jun  6 19:47 outputs_valid
+-rwxr-xr-x   1 wangchunzheng  staff       90 Jun  1 00:18 reset.sh
+-rwxr-xr-x   1 wangchunzheng  staff      767 May 24 02:15 runTest.sh
+-rw-r--r--@  1 wangchunzheng  staff      280 Jun  6 19:46 stderr
+-rw-r--r--@  1 wangchunzheng  staff    34050 Jun  6 19:47 stdout
+-rw-r--r--@  1 wangchunzheng  staff    91985 Jun  6 19:47 syswatch.log
+-rw-r--r--@  1 wangchunzheng  staff    23326 Jun  6 19:47 syswatch.root
+-rw-r--r--   1 wangchunzheng  staff    23878 Jun  6 19:47 train.log
+-rw-r--r--   1 wangchunzheng  staff        0 Jun  6 19:47 validation.log
+* ----------------------------------------------------*
+* ----------------   Job Validated  ------------------*
+* ----------------------------------------------------*
+*******************************************************

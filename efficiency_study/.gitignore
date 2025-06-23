@@ -1,0 +1,17 @@
+*.root
+*.log
+./vscode/*
+*.xml
+*.d
+*.so
+*.pcm
+my*
+*.pdf
+.cache
+stderr
+stdout
+*ACLiC*
+.ropeproject
+.DS_Store
+scripts/plots
+compile_commands.json

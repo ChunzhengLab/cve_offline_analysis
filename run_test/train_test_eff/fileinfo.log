@@ -1,0 +1,297 @@
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749166961
+opentime     0.000
+runtime      3.958
+filesize     203.985
+readsize     272.471
+throughput   68.842
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749166965
+opentime     0.000
+runtime      2.303
+filesize     203.985
+readsize     203.243
+throughput   88.269
+#summary#########################################################
+train_name   train
+root_time    6.62
+root_cpu     5.61
+init_time    0.25
+io_mng_time  4.82
+exec_time    1.55
+alien_site   
+host_name    Mac
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749167406
+opentime     0.000
+runtime      4.131
+filesize     203.985
+readsize     273.386
+throughput   66.172
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749167410
+opentime     0.000
+runtime      2.690
+filesize     203.985
+readsize     204.112
+throughput   75.875
+#summary#########################################################
+train_name   train
+root_time    7.17
+root_cpu     6.38
+init_time    0.242
+io_mng_time  4.95
+exec_time    1.98
+alien_site   
+host_name    Mac
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749167584
+opentime     0.000
+runtime      3.307
+filesize     203.985
+readsize     277.022
+throughput   83.770
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749167587
+opentime     0.000
+runtime      2.367
+filesize     203.985
+readsize     203.243
+throughput   85.857
+#summary#########################################################
+train_name   train
+root_time    6.1
+root_cpu     5.41
+init_time    0.295
+io_mng_time  4.9
+exec_time    0.902
+alien_site   
+host_name    Mac
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749167773
+opentime     0.000
+runtime      11.601
+filesize     545.056
+readsize     621.065
+throughput   53.537
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749167785
+opentime     0.000
+runtime      10.338
+filesize     545.056
+readsize     544.322
+throughput   52.650
+#summary#########################################################
+train_name   train
+root_time    22.3
+root_cpu     17.1
+init_time    0.304
+io_mng_time  16
+exec_time    5.94
+alien_site   
+host_name    Mac
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230314
+opentime     0.000
+runtime      11.328
+filesize     545.056
+readsize     621.065
+throughput   54.825
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18q/000295588/pass3/AOD252/AOD/001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230326
+opentime     0.000
+runtime      10.035
+filesize     545.056
+readsize     544.322
+throughput   54.244
+#summary#########################################################
+train_name   train
+root_time    21.7
+root_cpu     16.4
+init_time    0.317
+io_mng_time  15.6
+exec_time    5.85
+alien_site   
+host_name    eduroam-174179979-3.dyndns.cern.ch
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230426
+opentime     0.000
+runtime      11.075
+filesize     649.223
+readsize     724.926
+throughput   65.457
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230437
+opentime     0.000
+runtime      9.693
+filesize     649.223
+readsize     648.201
+throughput   66.870
+#summary#########################################################
+train_name   train
+root_time    21.1
+root_cpu     17.4
+init_time    0.284
+io_mng_time  17
+exec_time    3.84
+alien_site   
+host_name    eduroam-174179979-3.dyndns.cern.ch
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230867
+opentime     0.000
+runtime      3.727
+filesize     203.985
+readsize     272.471
+throughput   73.103
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230871
+opentime     0.000
+runtime      2.323
+filesize     203.985
+readsize     203.243
+throughput   87.500
+#summary#########################################################
+train_name   train
+root_time    6.41
+root_cpu     5.59
+init_time    0.247
+io_mng_time  4.81
+exec_time    1.35
+alien_site   
+host_name    eduroam-174179979-3.dyndns.cern.ch
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230912
+opentime     0.000
+runtime      3.925
+filesize     203.985
+readsize     273.386
+throughput   69.659
+#################################################################
+pfn          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749230916
+opentime     0.000
+runtime      2.580
+filesize     203.985
+readsize     204.112
+throughput   79.116
+#summary#########################################################
+train_name   train
+root_time    6.85
+root_cpu     6.12
+init_time    0.237
+io_mng_time  4.72
+exec_time    1.89
+alien_site   
+host_name    eduroam-174179979-3.dyndns.cern.ch
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749232021
+opentime     0.000
+runtime      11.201
+filesize     649.223
+readsize     724.926
+throughput   64.718
+#################################################################
+pfn          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+url          /Users/wangchunzheng/alice/data/2018/LHC18r/000296691/pass3/AOD252/0001/AliAOD.root
+se           local
+image        0
+nreplicas    0
+openstamp    1749232032
+opentime     0.000
+runtime      9.744
+filesize     649.223
+readsize     648.201
+throughput   66.523
+#summary#########################################################
+train_name   train
+root_time    21.3
+root_cpu     17.5
+init_time    0.29
+io_mng_time  17.1
+exec_time    3.86
+alien_site   
+host_name    eduroam-174179979-3.dyndns.cern.ch

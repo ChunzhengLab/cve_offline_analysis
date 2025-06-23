@@ -1,0 +1,2 @@
+/Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root
+/Users/wangchunzheng/alice/sim/2020/LHC20e3a/295585/AOD243/0001/AliAOD.root

@@ -1,0 +1,46 @@
+1. syssrc_data_collector.py
+打开某文件夹，首先验证是否文件夹中包含finalise_default.csv,否的话就报错推出
+文件夹名称可以是Lambda，Proton，或者Hadron，对于Lambda，Hadron文件夹，内部应该包含finalise_[taskname].csv，对于Proton，包含finalise_feeddown_dispose_[taskname].csv
+其中taskname需要列出文件名称匹配得到。
+
+其中，每一个文件finalise_[taskname]或者finalise_feeddown_dispose_[taskname]的数据格式应当都是：
+centrality,diff_type,diff_bin,pair_type,delta,delta_err,gamma,gamma_err
+或者
+centrality,pair_type,delta,delta_err,gamma,gamma_err
+
+将文件重新平铺成（如果不存在diff_type, diff_bin，那么将这两项留空）
+source,centrality,diff_type,diff_bin,pair_type,delta,delta_err,gamma,gamma_err
+
+输出成一个新的csv文件，现在每一个文件夹将对应一个新文件。叫finalise_sys_Lambda.csv/或者finalise_sys_Proton.csv/或者finalise_sys_Hadron.csv
+
+输入的文件夹位置应该由--inputdir指定 默认为../csv_data_point/Proton
+默认的outputdir应该是./ 可以用 --outputdir指定
+
+
+2. barlow_ratio_calcuter.py
+将生成的文件作为输入，计算barlow ratio
+其中delta(gamma)_diff：算的是每一个source和default的差距,和delta(gamma)_relative_diff：此差距比上default的值
+delta(gamma)_barlow_ratio的计算方式是 delta(gamma)_barlow_ratio = ｜delta(gamma)_diff｜ / sqrt(delta(gamma)_err^2[default] - delta(gamma)_err^2[source]), is_delta_over_thr 和 is_gamma_over_thr 通过 delta_barlow_ratio 是否大于1来确定（1应该是一个可以设置的阈值）
+
+最终输出应当像是：
+source,centrality,diff_type,diff_bin,pair_type,delta,delta_err,gamma,gamma_err,delta_diff,gamma_diff,delta_relative_diff,gamma_relative_diff,delta_barlow_ratio,gamma_barlow_ratio,is_delta_over_thr,is_gamma_over_thr
+
+3.sys_src_determiner.py
+将刚才生成的文件作为输入，此时，要考虑，在各个中心度下，is_delta(gamma)_over_thr 的 数量大于了2，如果大于了2(这个数值可以设置)，就认为是这个source是sys_src，否则就认为不是sys_src
+最终的输出应当是
+source,centrality,diff_type,diff_bin,pair_type,delta,delta_err,gamma,gamma_err,delta_diff,gamma_diff,delta_relative_diff,gamma_relative_diff,delta_barlow_ratio,gamma_barlow_ratio,is_delta_over_thr,is_gamma_over_thr,is_delta_syssrc,is_gamma_syssrc
+
+4. contribution_fraction.py
+如果is_delta(gamma)_src，就会计入这个中心度，这个diff_type，这个diff_bin，这个pair_type最终的系统误差，
+计算这个source的贡献率写入contribution_fraction
+source,centrality,diff_type,diff_bin,pair_type,delta,delta_err,gamma,gamma_err,delta_diff,gamma_diff,delta_relative_diff,gamma_relative_diff,delta_barlow_ratio,gamma_barlow_ratio,is_delta_over_thr,is_gamma_over_thr,is_delta_syssrc,is_gamma_syssrc,delta_contribution_fraction,gamma_contribution_fraction
+
+5.finalise.py
+生成文件名可以简单一点，就叫：
+Lambda.csv，Proton.csv，Hadron就可以了
+
+非常好，现在请你写一个analysis.py脚本，把这一串串起来
+
+只需要python3 analysis.py Lambda 就可以运行了。
+
+但是某些参数还是可以支持设置

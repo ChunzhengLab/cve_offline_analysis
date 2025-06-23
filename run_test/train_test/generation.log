@@ -1,0 +1,101 @@
+I-AliRoot::main: Set stack size from 7 to 8 MB
+   ------------------------------------------------------------------
+  | Welcome to ROOT 6.32.06                        https://root.cern |
+  | (c) 1995-2024, The ROOT Team; conception: R. Brun, F. Rademakers |
+  | Built for macosxarm64 on Jun 05 2025, 14:42:56                   |
+  | From tags/v6-32-06-alice7@v6-32-06-alice7                        |
+  | With Apple clang version 17.0.0 (clang-1700.0.13.5)              |
+  | Try '.help'/'.?', '.demo', '.license', '.credits', '.quit'/'.q'  |
+   ------------------------------------------------------------------
+
+
+Processing generate.C...
+Connecting to AliEn...
+I-TJAlienConnectionManager: Opening connection to JCentral. Please wait
+I-TJAlienConnectionManager: Opening connection to 128.142.249.32
+I-TJAlienConnectionManager: Successfully connected to 128.142.249.32
+>>>>>>> Read train configuration
+Collection name='TObjArray', class='TObjArray', size=16
+ ====================================================================
+# Analysis task:                CVE2025_18q_TPC_Test
+# Supported data types:         ESD, AOD, MC
+# Extra libraries:              
+# Extra dependencies:           MultSelection,PhysicsSelection,PIDResponse
+# Macro to configure deps:      CVE2025_18q_TPC_Test_Config.C
+# Macro connecting this task:   $ALICE_PHYSICS/PWGCF/FLOW/macros/AddTaskCVEPIDCMEDiff.C
+# Arguments to run the macro:   "LHC18q", "TPC", "Proton", "default"
+ ====================================================================
+# Analysis task:                MultSelection
+# Supported data types:         ESD, AOD, MC
+# Extra libraries:              
+# Extra dependencies:           
+# Macro to configure deps:      MultSelection_Config.C
+# Macro connecting this task:   $ALICE_PHYSICS/OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C
+# Arguments to run the macro:   
+ ====================================================================
+# Analysis task:                PhysicsSelection
+# Supported data types:         ESD, AOD, MC
+# Extra libraries:              
+# Extra dependencies:           
+# Macro to configure deps:      PhysicsSelection_Config.C
+# Macro connecting this task:   $ALICE_PHYSICS/OADB/macros/AddTaskPhysicsSelection.C
+# Arguments to run the macro:   
+ ====================================================================
+# Analysis task:                PIDResponse
+# Supported data types:         ESD, AOD, MC
+# Extra libraries:              
+# Extra dependencies:           
+# Macro to configure deps:      PIDResponse_Config.C
+# Macro connecting this task:   $ALICE_ROOT/ANALYSIS/macros/AddTaskPIDResponse.C
+# Arguments to run the macro:   
+I-AliAnalysisAlien::SetDefaultOutputs: Plugin will use the output files taken from analysis manager
+Adding dataset path: /alice/data/2018/LHC18q/000296510/pass3/AOD252/AliAOD.root
+Set OutputFileName : 
+ AnalysisResults.root:MultSelection
+
+(AliMultSelectionTask *) 0x119ae0000
+I-AliAnalysisTaskCfg::ExecuteMacro: Macro AddTaskMultSelection added 1 tasks to the manager
+I-AliPhysicsSelectionTask::AliPhysicsSelectionTask: Physics Event Selection enabled.
+(AliPhysicsSelectionTask *) 0x158890880
+I-AliAnalysisTaskCfg::ExecuteMacro: Macro AddTaskPhysicsSelection added 1 tasks to the manager
+========================================================================================
+PIDResponse: Initialising AliAnalysisTaskPIDResponse
+========================================================================================
+(AliAnalysisTaskPIDResponse *) 0x117f45e30
+I-AliAnalysisTaskCfg::ExecuteMacro: Macro AddTaskPIDResponse added 1 tasks to the manager
+I-TJAlienFile::Open: Accessing file /alice/cern.ch/user/c/chunzhen/calibration_files/eff_pt_calib_cent.root in SE <ALICE::CERN::EOS>
+I-TJAlienFile::Open: Accessing file /alice/cern.ch/user/c/chunzhen/calibration_files/WgtsNUAChargeAndPion_LHC18qPass3_FB768_AlexPU_DeftMode_Sept2021NoAvgQ.root in SE <ALICE::CERN::EOS>
+I-TJAlienFile::Open: Accessing file /alice/cern.ch/user/c/chunzhen/calibration_files/TPCQVectorMean18q.root in SE <ALICE::CERN::EOS>
+I-AddTaskCVEPIDCMEDiff.C: No need for VZERO calibration, dummy list created.
+>>>>================  Return task =================<<<<
+(AliAnalysisTaskCVEPIDCMEDiff *) 0x126d5d600
+I-AliAnalysisTaskCfg::ExecuteMacro: Macro AddTaskCVEPIDCMEDiff added 1 tasks to the manager
+I-AliAnalysisManager::PrintStatus: System information will be collected each 40 events
+=== TOP CONTAINER:
+Container: cAUTO_INPUT     DATA TYPE: TChain
+= Not connected to a data producer
+ = Client tasks indented below:
+______________________________________________________________________________
+   task: taskMultSelection  ACTIVE=0 POST_LOOP=0
+      INPUT #0: TChain <-  [cAUTO_INPUT]
+      OUTPUT #0: TTree ->  [NO CONTAINER]
+      OUTPUT #1: TList ->  [cListMultSelection]
+      Container: cListMultSelection     DATA TYPE: TList
+       = Filename: AnalysisResults.root  folder: MultSelection
+______________________________________________________________________________
+   task: AliPhysicsSelectionTask  ACTIVE=0 POST_LOOP=0
+      INPUT #0: TChain <-  [cAUTO_INPUT]
+      OUTPUT #0: TTree ->  [NO CONTAINER]
+      OUTPUT #1: TList ->  [cstatsout]
+      Container: cstatsout     DATA TYPE: TList
+       = Filename: EventStat_temp.root
+______________________________________________________________________________
+   task: PIDResponseTask  ACTIVE=0 POST_LOOP=0
+      INPUT #0: TChain <-  [cAUTO_INPUT]
+      OUTPUT #0: TTree ->  [NO CONTAINER]
+W-TClass::Init: no dictionary for class pair<int,pair<float,float> > is available
+I-AliAnalysisAlien::WriteAnalysisFile: 
+#####   Analysis manager: train wrote to file <lego_train.root>
+
+I-AliAnalysisAlien::WriteAnalysisMacro: 
+#####   Analysis macro to run on worker nodes <lego_train.C> written
