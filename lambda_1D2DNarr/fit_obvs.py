@@ -17,7 +17,7 @@ parser.add_argument('-o', '--output-dir', type=str, default='./',
                    help='输出目录')
 parser.add_argument('--fit-mode', choices=['2Dfit', '1Dfit', 'narrMass', 'all'],
                    default='2Dfit', help='拟合方法选择 (默认: 2Dfit)')
-parser.add_argument('--range_mass', type=float, default=0.0014, help='质量窗口范围 (默认: 0.0014)')
+parser.add_argument('--range_mass', type=float, default=0.0014, help='质量窗口范围 (默认: 0.0007)')
 args = parser.parse_args()
 
 # 固定粒子类型为Lambda

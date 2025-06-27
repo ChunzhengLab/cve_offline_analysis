@@ -29,6 +29,8 @@ parser.add_argument('--fs-force-non-neg', action='store_true', default=False,
                    help='是否强制信号分数为非负值,默认不强制')
 parser.add_argument('--maxfev', type=int, default=1000000,
                    help='curve_fit的最大函数评估次数')
+parser.add_argument('--plot-signal-sum', action='store_true', default=False,
+                   help='画出信号总量和信号/背景比值随中心度变化的图')
 args = parser.parse_args()
 
 # 设置输出目录
@@ -163,6 +165,49 @@ df.to_csv(output_csv, index=False)
 fit_param_df = pd.DataFrame(fit_param_records)
 fit_param_df.to_csv(params_csv, index=False)
 print(f"已生成 {output_csv}（含信号分数） 和 {params_csv}（拟合参数）")
+
+# 统计信号总量和信号/背景比值
+signal_sum_records = []
+for group_keys, group_df in all_groups:
+    centrality, diff_type, diff_bin, pair_type = group_keys
+    params = fit_param_dict[group_keys]
+    in_signal_mask = (group_df['inv_mass_center'] >= SIGNAL_MIN) & (group_df['inv_mass_center'] <= SIGNAL_MAX)
+    y_obs = group_df.loc[in_signal_mask, 'inv_mass_counts'].values
+    x = group_df.loc[in_signal_mask, 'inv_mass_center'].values
+    y_bkg = exp_poly_func(x, *params)
+    signal_sum = np.sum(y_obs - y_bkg)
+    bkg_sum = np.sum(y_bkg)
+    signal_bkg_ratio = signal_sum / bkg_sum if bkg_sum != 0 else np.nan
+    signal_sum_records.append({
+        'centrality': centrality,
+        'diff_type': diff_type,
+        'diff_bin': diff_bin,
+        'pair_type': pair_type,
+        'signal_sum': signal_sum,
+        'bkg_sum': bkg_sum,
+        'signal_bkg_ratio': signal_bkg_ratio
+    })
+signal_sum_df = pd.DataFrame(signal_sum_records)
+signal_sum_csv = os.path.join(output_path, f'signal_sum_vs_centrality_{args.task}.csv')
+signal_sum_df.to_csv(signal_sum_csv, index=False)
+print(f'已生成信号总量/比值文件: {signal_sum_csv}')
+
+# 可选画图
+if args.plot_signal_sum:
+    for ycol, ylab in zip(['signal_sum', 'signal_bkg_ratio'], ['Signal Sum', 'Signal/Bkg Ratio']):
+        plt.figure(figsize=(8,6))
+        for (diff_type, diff_bin, pair_type), sub in signal_sum_df.groupby(['diff_type', 'diff_bin', 'pair_type']):
+            plt.plot(sub['centrality'], sub[ycol], 'o-', label=f'{diff_type}-{diff_bin}-{pair_type}')
+        plt.xlabel('Centrality')
+        plt.ylabel(ylab)
+        plt.title(f'{ylab} vs Centrality')
+        plt.legend(fontsize=8)
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        outfig = os.path.join(output_path, f'{ycol}_vs_centrality_{args.task}.pdf')
+        plt.savefig(outfig)
+        print(f'已生成信号总量/比值图: {outfig}')
+        plt.close()
 
 # 绘图函数
 def plot_grid_centralities(centrality_list, cendf_list, fit_param_dict, diff_type, diff_bin, pair_type):

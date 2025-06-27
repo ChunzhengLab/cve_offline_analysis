@@ -49,6 +49,7 @@ for i, pair_type in enumerate(pair_types):
         if method not in method_colors:
             continue
         data = df[df['pair_type'] == pair_type].sort_values('centrality')
+        data = data[data['centrality'] <= 60]  # 只保留centrality<=60
         if len(data) > 0:
             ax.errorbar(data['centrality'], data['delta_ss'], yerr=data['delta_ss_err'], 
                        label=method_labels.get(method, method), 
@@ -59,7 +60,7 @@ for i, pair_type in enumerate(pair_types):
     ax.set_ylabel('Delta SS')
     ax.set_title(f'{pair_type}')
     ax.legend()
-    ax.set_xlim(0, 70) 
+    ax.set_xlim(0, 60) 
     ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
@@ -76,6 +77,7 @@ for i, pair_type in enumerate(pair_types):
         if method not in method_colors:
             continue
         data = df[df['pair_type'] == pair_type].sort_values('centrality')
+        data = data[data['centrality'] <= 60]  # 只保留centrality<=60
         if len(data) > 0:
             ax.errorbar(data['centrality'], data['rawgamma_ss'], yerr=data['rawgamma_ss_err'], 
                        label=method_labels.get(method, method), 
@@ -86,7 +88,7 @@ for i, pair_type in enumerate(pair_types):
     ax.set_ylabel('Rawgamma SS')
     ax.set_title(f'{pair_type}')
     ax.legend()
-    ax.set_xlim(0, 70)
+    ax.set_xlim(0, 60)
     ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
@@ -105,3 +107,114 @@ for method, df in data_dict.items():
 print(f"\n生成的图片文件:")
 print("- delta_ss_method_comparison.png")
 print("- rawgamma_ss_method_comparison.png")
+
+def plot_method_ratio(data_dict, pair_types):
+    if not all(k in data_dict for k in ['2Dfit', '1Dfit', 'narrMass']):
+        print("缺少2Dfit、1Dfit或narrMass数据，无法画比值图")
+        return
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig.suptitle('Method / Narrow Mass Ratio vs Centrality', fontsize=16)
+
+    for i, pair_type in enumerate(pair_types):
+        ax = axes[i//2, i%2]
+        # merge三种方法，保证中心度一一对应
+        df_2d = data_dict['2Dfit'][data_dict['2Dfit']['pair_type'] == pair_type]
+        df_1d = data_dict['1Dfit'][data_dict['1Dfit']['pair_type'] == pair_type]
+        df_nm = data_dict['narrMass'][data_dict['narrMass']['pair_type'] == pair_type]
+        df_2d = df_2d[df_2d['centrality'] <= 60]
+        df_1d = df_1d[df_1d['centrality'] <= 60]
+        df_nm = df_nm[df_nm['centrality'] <= 60]
+
+        # 只保留三者都存在的中心度
+        merged_2d = pd.merge(df_2d, df_nm, on='centrality', suffixes=('_2d', '_nm'))
+        merged_1d = pd.merge(df_1d, df_nm, on='centrality', suffixes=('_1d', '_nm'))
+
+        # 2Dfit/narrMass
+        if len(merged_2d) > 0:
+            ratio_2d = merged_2d['delta_ss_2d'] / merged_2d['delta_ss_nm']
+            # 误差传播
+            err_2d = np.abs(ratio_2d) * np.sqrt(
+                (merged_2d['delta_ss_err_2d'] / merged_2d['delta_ss_2d'])**2 +
+                (merged_2d['delta_ss_err_nm'] / merged_2d['delta_ss_nm'])**2
+            )
+            ax.errorbar(merged_2d['centrality'], ratio_2d, yerr=err_2d,
+                        label='2D Fit / narrMass', color='red', marker='o', linestyle='-', linewidth=2, capsize=4)
+
+        # 1Dfit/narrMass
+        if len(merged_1d) > 0:
+            ratio_1d = merged_1d['delta_ss_1d'] / merged_1d['delta_ss_nm']
+            err_1d = np.abs(ratio_1d) * np.sqrt(
+                (merged_1d['delta_ss_err_1d'] / merged_1d['delta_ss_1d'])**2 +
+                (merged_1d['delta_ss_err_nm'] / merged_1d['delta_ss_nm'])**2
+            )
+            ax.errorbar(merged_1d['centrality'], ratio_1d, yerr=err_1d,
+                        label='1D Fit / narrMass', color='blue', marker='s', linestyle='--', linewidth=2, capsize=4)
+
+        ax.axhline(1, color='black', linestyle='--', alpha=0.5)
+        ax.set_xlabel('Centrality (%)')
+        ax.set_ylabel('Delta SS Ratio')
+        ax.set_title(pair_type)
+        ax.legend()
+        ax.set_xlim(0, 60)
+        ax.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    plt.savefig('delta_ss_method_ratio_vs_narrMass.pdf')
+    print('已生成比值图: delta_ss_method_ratio_vs_narrMass.pdf')
+
+plot_method_ratio(data_dict, pair_types)
+
+def plot_rawgamma_method_ratio(data_dict, pair_types):
+    if not all(k in data_dict for k in ['2Dfit', '1Dfit', 'narrMass']):
+        print("缺少2Dfit、1Dfit或narrMass数据，无法画rawgamma比值图")
+        return
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig.suptitle('Rawgamma SS: Method / Narrow Mass Ratio vs Centrality', fontsize=16)
+
+    for i, pair_type in enumerate(pair_types):
+        ax = axes[i//2, i%2]
+        df_2d = data_dict['2Dfit'][data_dict['2Dfit']['pair_type'] == pair_type]
+        df_1d = data_dict['1Dfit'][data_dict['1Dfit']['pair_type'] == pair_type]
+        df_nm = data_dict['narrMass'][data_dict['narrMass']['pair_type'] == pair_type]
+        df_2d = df_2d[df_2d['centrality'] <= 60]
+        df_1d = df_1d[df_1d['centrality'] <= 60]
+        df_nm = df_nm[df_nm['centrality'] <= 60]
+
+        merged_2d = pd.merge(df_2d, df_nm, on='centrality', suffixes=('_2d', '_nm'))
+        merged_1d = pd.merge(df_1d, df_nm, on='centrality', suffixes=('_1d', '_nm'))
+
+        # 2Dfit/narrMass
+        if len(merged_2d) > 0:
+            ratio_2d = merged_2d['rawgamma_ss_2d'] / merged_2d['rawgamma_ss_nm']
+            err_2d = np.abs(ratio_2d) * np.sqrt(
+                (merged_2d['rawgamma_ss_err_2d'] / merged_2d['rawgamma_ss_2d'])**2 +
+                (merged_2d['rawgamma_ss_err_nm'] / merged_2d['rawgamma_ss_nm'])**2
+            )
+            ax.errorbar(merged_2d['centrality'], ratio_2d, yerr=err_2d,
+                        label='2D Fit / narrMass', color='red', marker='o', linestyle='-', linewidth=2, capsize=4)
+
+        # 1Dfit/narrMass
+        if len(merged_1d) > 0:
+            ratio_1d = merged_1d['rawgamma_ss_1d'] / merged_1d['rawgamma_ss_nm']
+            err_1d = np.abs(ratio_1d) * np.sqrt(
+                (merged_1d['rawgamma_ss_err_1d'] / merged_1d['rawgamma_ss_1d'])**2 +
+                (merged_1d['rawgamma_ss_err_nm'] / merged_1d['rawgamma_ss_nm'])**2
+            )
+            ax.errorbar(merged_1d['centrality'], ratio_1d, yerr=err_1d,
+                        label='1D Fit / narrMass', color='blue', marker='s', linestyle='--', linewidth=2, capsize=4)
+
+        ax.axhline(1, color='black', linestyle='--', alpha=0.5)
+        ax.set_xlabel('Centrality (%)')
+        ax.set_ylabel('Rawgamma SS Ratio')
+        ax.set_title(pair_type)
+        ax.legend()
+        ax.set_xlim(0, 60)
+        ax.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    plt.savefig('rawgamma_ss_method_ratio_vs_narrMass.pdf')
+    print('已生成比值图: rawgamma_ss_method_ratio_vs_narrMass.pdf')
+
+plot_rawgamma_method_ratio(data_dict, pair_types)
