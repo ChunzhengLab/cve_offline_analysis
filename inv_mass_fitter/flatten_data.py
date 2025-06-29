@@ -42,8 +42,8 @@ print(f"成功找到 {args.task}/{list_name}")
 
 # 获取两个TH3D对象
 hist_names = {
-    "fHist3LambdaCentPtMass": "Lambda",
-    "fHist3AntiLambdaCentPtMass": "LambdaBar"
+    "fHist3LambdaCentPtMassWeighted": "Lambda",
+    "fHist3AntiLambdaCentPtMassWeighted": "LambdaBar"
 }
 
 records = []
@@ -53,6 +53,7 @@ for hist_name, particle in hist_names.items():
     if not h3:
         print(f"警告：未找到 {hist_name}")
         continue
+    h3 = h3.RebinZ(2) # 60 --> 30
     nx = h3.GetNbinsX()
     ny = h3.GetNbinsY()
     nz = h3.GetNbinsZ()

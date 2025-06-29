@@ -97,14 +97,26 @@ df.drop(columns=['__rowid__'], inplace=True)
 
 # 只保留需要的列
 out_cols = ['centrality', 'particle', 'pT_mean', 'inv_mass_mean', 'fs']
-output_csv = os.path.splitext(args.output_csv)[0] + dataset_suffix + '.csv'
-df[out_cols].to_csv(output_csv, index=False)
-print(f"已生成 {output_csv}（含信号分数）")
+# 获取粒子名称，用于文件命名
+particle_list = sorted(df['particle'].unique())
+particle_str = '_'.join(particle_list)
+# 使用输出目录
+output_dir = os.path.dirname(args.output_csv)
+# 保存主输出文件 - 只生成一个合并的文件
+output_csv = f"inv_mass_frac_sig{dataset_suffix}.csv"
+output_path = os.path.join(output_dir, output_csv)
+df[out_cols].to_csv(output_path, index=False)
+print(f"已生成 {output_path}（含信号分数）")
+
+# 保存用于后续处理的完整路径
+output_base_path = os.path.join(output_dir, f"inv_mass_frac_sig{dataset_suffix}")
 
 # 统计信号总量和信号/背景比值
 signal_sum_records = []
 for group_keys, group_df in all_groups:
     centrality, particle, pT_mean = group_keys
+    # 将centrality元组的第一个元素作为浮点数
+    cent_value = centrality[0] if isinstance(centrality, tuple) else centrality
     params = fit_param_dict.get(group_keys, [0.0] * (args.poly_order + 3))
     in_signal_mask = (group_df['inv_mass_mean'] >= SIGNAL_MIN) & (group_df['inv_mass_mean'] <= SIGNAL_MAX)
     y_obs = group_df.loc[in_signal_mask, 'inv_mass_count'].values
@@ -114,7 +126,7 @@ for group_keys, group_df in all_groups:
     bkg_sum = np.sum(y_bkg)
     signal_bkg_ratio = signal_sum / bkg_sum if bkg_sum != 0 else np.nan
     signal_sum_records.append({
-        'centrality': centrality,
+        'centrality': cent_value,
         'particle': particle,
         'pT_mean': pT_mean,
         'signal_sum': signal_sum,
@@ -122,9 +134,28 @@ for group_keys, group_df in all_groups:
         'signal_bkg_ratio': signal_bkg_ratio
     })
 signal_sum_df = pd.DataFrame(signal_sum_records)
-signal_sum_csv = os.path.join(os.path.dirname(output_csv), f'signal_sum_vs_centrality_{os.path.basename(output_csv).split(".")[0]}.csv')
-signal_sum_df.to_csv(signal_sum_csv, index=False)
-print(f'已生成信号总量/比值文件: {signal_sum_csv}')
+
+# 保存微分数据文件 (包含pT信息)
+diff_signal_sum_csv = os.path.join(output_dir, f'ratio_sigbkg_centrality_pT{dataset_suffix}.csv')
+signal_sum_df.to_csv(diff_signal_sum_csv, index=False)
+print(f'已生成微分信号总量/比值文件 (包含pT): {diff_signal_sum_csv}')
+
+# 按中心度和粒子类型进行汇总，去除pT维度
+agg_columns = ['centrality', 'particle']
+agg_signal_sum_df = signal_sum_df.groupby(agg_columns, as_index=False).agg({
+    'signal_sum': 'sum',
+    'bkg_sum': 'sum'
+})
+# 重新计算汇总后的信噪比
+agg_signal_sum_df['signal_bkg_ratio'] = agg_signal_sum_df.apply(
+    lambda row: row['signal_sum'] / row['bkg_sum'] if row['bkg_sum'] != 0 else np.nan, 
+    axis=1
+)
+
+# 保存汇总数据文件 (不包含pT信息)
+agg_signal_sum_csv = os.path.join(output_dir, f'ratio_sigbkg_centrality{dataset_suffix}.csv')
+agg_signal_sum_df.to_csv(agg_signal_sum_csv, index=False)
+print(f'已生成汇总信号总量/比值文件: {agg_signal_sum_csv}')
 
 # 可选画图
 if args.plot_signal_sum:
@@ -138,14 +169,14 @@ if args.plot_signal_sum:
         plt.legend(fontsize=8)
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
-        outfig = os.path.join(os.path.dirname(output_csv), f'{ycol}_vs_pT_mean_{os.path.basename(output_csv).split(".")[0]}.pdf')
+        outfig = os.path.join(output_dir, f'{ycol}_vs_pT_mean_ALL{dataset_suffix}.pdf')
         plt.savefig(outfig)
         print(f'已生成信号总量/比值图: {outfig}')
         plt.close()
 
 # 分组输出PDF，每个(centrality, particle)一个PDF，3x6子图
 print(f"开始生成拟合图像...")
-plot_dir = os.path.join(os.path.dirname(output_csv), f'plot{dataset_suffix}')
+plot_dir = os.path.join(output_dir, f'plot{dataset_suffix}')
 os.makedirs(plot_dir, exist_ok=True)
 pdf_count = 0
 
@@ -245,43 +276,53 @@ for (centrality, particle), subdf in cent_part_groups:
             plt.close(fig)
             print(f"Output pT-integrated PDF: {ptint_pdf}")
 
-        # ----------- pT积分后的signal_sum_vs_centrality_xxx_ptint.csv -----------
-        ptint_signal_sum_records = []
-        ptint_all_groups = ptint_groups.groupby(['centrality', 'particle'])
-        for (centrality, particle), group_df in ptint_all_groups:
-            x = group_df['inv_mass_mean'].values
-            y = group_df['inv_mass_count'].values
-            side_mask = (x < SIGNAL_MIN) | (x > SIGNAL_MAX)
-            x_fit = x[side_mask]
-            y_fit = y[side_mask]
-            if len(x_fit) < args.poly_order + 3 or np.all(y_fit == 0):
-                params = [0.0] * (args.poly_order + 3)
-            else:
-                try:
-                    p0 = [np.max(y_fit), -5] + [0.0] * (args.poly_order + 1)
-                    popt, _ = curve_fit(exp_poly_func, x_fit, y_fit, p0=p0, maxfev=args.maxfev)
-                    params = popt
-                except Exception as e:
-                    print(f"pT-integrated fit failed {(centrality, particle)}: {str(e)}")
+        # ----------- 生成pT积分后的数据文件 -----------
+        # 收集所有粒子的数据到一个列表中
+        all_ptint_signal_sum_records = []
+        
+        for particle_type in all_particles:
+            # 筛选当前粒子类型的记录
+            particle_groups = ptint_groups[ptint_groups['particle'] == particle_type].groupby(['centrality'])
+            
+            for centrality, group_df in particle_groups:
+                x = group_df['inv_mass_mean'].values
+                y = group_df['inv_mass_count'].values
+                side_mask = (x < SIGNAL_MIN) | (x > SIGNAL_MAX)
+                x_fit = x[side_mask]
+                y_fit = y[side_mask]
+                if len(x_fit) < args.poly_order + 3 or np.all(y_fit == 0):
                     params = [0.0] * (args.poly_order + 3)
-            in_signal_mask = (x >= SIGNAL_MIN) & (x <= SIGNAL_MAX)
-            y_obs = y[in_signal_mask]
-            x_sig = x[in_signal_mask]
-            y_bkg = exp_poly_func(x_sig, *params)
-            signal_sum = np.sum(y_obs - y_bkg)
-            bkg_sum = np.sum(y_bkg)
-            signal_bkg_ratio = signal_sum / bkg_sum if bkg_sum != 0 else np.nan
-            ptint_signal_sum_records.append({
-                'centrality': centrality,
-                'particle': particle,
-                'signal_sum': signal_sum,
-                'bkg_sum': bkg_sum,
-                'signal_bkg_ratio': signal_bkg_ratio
-            })
-        ptint_signal_sum_df = pd.DataFrame(ptint_signal_sum_records)
-        ptint_signal_sum_csv = os.path.splitext(signal_sum_csv)[0] + '_ptint.csv'
-        ptint_signal_sum_df.to_csv(ptint_signal_sum_csv, index=False)
-        print(f'Output pT-integrated signal sum file: {ptint_signal_sum_csv}')
+                else:
+                    try:
+                        p0 = [np.max(y_fit), -5] + [0.0] * (args.poly_order + 1)
+                        popt, _ = curve_fit(exp_poly_func, x_fit, y_fit, p0=p0, maxfev=args.maxfev)
+                        params = popt
+                    except Exception as e:
+                        print(f"pT-integrated fit failed {(centrality, particle_type)}: {str(e)}")
+                        params = [0.0] * (args.poly_order + 3)
+                in_signal_mask = (x >= SIGNAL_MIN) & (x <= SIGNAL_MAX)
+                y_obs = y[in_signal_mask]
+                x_sig = x[in_signal_mask]
+                y_bkg = exp_poly_func(x_sig, *params)
+                signal_sum = np.sum(y_obs - y_bkg)
+                bkg_sum = np.sum(y_bkg)
+                signal_bkg_ratio = signal_sum / bkg_sum if bkg_sum != 0 else np.nan
+                # 将centrality元组的第一个元素作为浮点数
+                cent_value = centrality[0] if isinstance(centrality, tuple) else centrality
+                all_ptint_signal_sum_records.append({
+                    'centrality': cent_value,
+                    'particle': particle_type,
+                    'signal_sum': signal_sum,
+                    'bkg_sum': bkg_sum,
+                    'signal_bkg_ratio': signal_bkg_ratio
+                })
+        
+        # 仅生成一个包含所有粒子的CSV文件
+        if all_ptint_signal_sum_records:  # 确保有数据再生成文件
+            all_ptint_signal_sum_df = pd.DataFrame(all_ptint_signal_sum_records)
+            # 这部分数据与前面的汇总文件重复，所以不再输出到文件
+            # 只用于生成PDF图表
+            pass
     pdf_count += 1
     print(f"已输出 {pdfname}")
 
@@ -297,6 +338,8 @@ ptint_all_groups = ptint_groups.groupby(['centrality', 'particle'])
 
 ptint_records = []
 for (centrality, particle), group_df in ptint_all_groups:
+    # 将centrality元组的第一个元素作为浮点数
+    cent_value = centrality[0] if isinstance(centrality, tuple) else centrality
     x = group_df['inv_mass_mean'].values
     y = group_df['inv_mass_count'].values
     # 侧带用于拟合
@@ -324,13 +367,15 @@ for (centrality, particle), group_df in ptint_all_groups:
         fs[valid_mask] = signal[valid_mask] / y[valid_mask]
     for inv_mass_mean, fs_val in zip(x, fs):
         ptint_records.append({
-            'centrality': centrality,
+            'centrality': cent_value,
             'particle': particle,
             'inv_mass_mean': inv_mass_mean,
             'fs': fs_val
         })
 
 ptint_df = pd.DataFrame(ptint_records)
-ptint_csv = os.path.splitext(output_csv)[0] + '_ptint.csv'
+
+# 只保存一个包含所有粒子的pT整合文件
+ptint_csv = os.path.join(output_dir, f'inv_mass_frac_sig{dataset_suffix}_ptint.csv')
 ptint_df.to_csv(ptint_csv, index=False)
 print(f"已生成pT整体积分后的信号分数表: {ptint_csv}")
