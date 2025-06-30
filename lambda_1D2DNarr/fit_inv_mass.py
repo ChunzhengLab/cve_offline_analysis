@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import os
 import argparse
+import sys
 
 # 解析命令行参数
 parser = argparse.ArgumentParser(description='拟合不变质量谱并计算信号分数')
@@ -26,10 +27,8 @@ parser.add_argument('--poly-order', type=int, default=2,
                    help='背景拟合使用的多项式阶数')
 parser.add_argument('--maxfev', type=int, default=1000000,
                    help='curve_fit的最大函数评估次数')
-parser.add_argument('--plot-signal-sum', action='store_true',
-                   help='画出信号总量随中心度变化的图')
 parser.add_argument('--read-frac', action='store_true',
-                   help='直接从mass_to_fs.csv读取fs_mass_1和fs_mass_2，不做拟合')
+                   help='直接从inv_mass_frac_sig_{dataset}_ptint.csv读取fs_mass_1和fs_mass_2，不做拟合')
 args = parser.parse_args()
 
 # 固定粒子类型为Lambda
@@ -85,6 +84,85 @@ full_group_cols = ['pair_type']
 
 all_groups = df.groupby(group_cols)
 pdf_groups = df.groupby(full_group_cols)
+
+# 辅助函数：从查找表获取fs值
+def get_fs(lookup, cent, particle, mass):
+    try:
+        return lookup.loc[(cent, particle, mass)]
+    except KeyError:
+        return np.nan
+
+# 检查是否需要直接读取分数
+if args.read_frac:
+    # 尝试几种可能的文件路径
+    possible_paths = [
+        f"../inv_mass_fitter/inv_mass_frac_sig_{args.dataset.replace('LHC', '')}_ptint.csv"
+    ]
+
+    ptint_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            ptint_path = path
+            break
+
+    if ptint_path is None:
+        print(f"错误：开启了--read-frac，但找不到信号分数文件。尝试的路径:")
+        for path in possible_paths:
+            print(f"  - {path}")
+        print("请确保文件存在或关闭--read-frac选项。")
+        sys.exit(1)
+
+    print(f'开启 --read-frac，直接从{ptint_path}读取fs_mass_1和fs_mass_2')
+
+    try:
+        frac_df = pd.read_csv(ptint_path)
+        print(f"成功读取文件: {ptint_path}")
+
+        # 构建查找表：centrality, particle, inv_mass_mean -> fs
+        frac_lookup = frac_df.set_index(['centrality', 'particle', 'inv_mass_mean'])['fs']
+
+        # 获取fs_mass_1和fs_mass_2
+        fs_mass_1 = np.zeros(len(df))
+        fs_mass_2 = np.zeros(len(df))
+
+        for idx, row in df.iterrows():
+            cent = row['centrality']
+            mass1 = row['inv_mass_1_center']
+            mass2 = row['inv_mass_2_center']
+            pair_type = row['pair_type']
+
+            # 根据pair_type确定对应的粒子类型
+            if pair_type == 'LambdaLambda':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'Lambda', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'Lambda', mass2)
+            elif pair_type == 'LambdaLambdaBar':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'Lambda', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass2)
+            elif pair_type == 'LambdaBarLambda':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'Lambda', mass2)
+            elif pair_type == 'LambdaBarLambdaBar':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass2)
+            else:
+                fs_mass_1[idx] = np.nan
+                fs_mass_2[idx] = np.nan
+
+        df['fs_mass_1'] = fs_mass_1
+        df['fs_mass_2'] = fs_mass_2
+        df.drop(columns=['__rowid__'], inplace=True)
+        df.to_csv(output_csv, index=False)
+        print(f"已生成 {output_csv}（直接读取fs_mass_1/2）")
+
+        # 直接退出，不执行任何拟合或图像生成逻辑
+        print("--read-frac 模式已完成，跳过拟合和图像生成过程")
+        sys.exit(0)
+    except Exception as e:
+        print(f"错误：读取或处理文件时出错: {str(e)}")
+        sys.exit(1)
+
+# ========================== 以下是拟合和图像生成逻辑 ==========================
+# 这部分代码只在未启用--read-frac或读取失败时执行
 
 # 存储积分结果和拟合参数
 integrated_data = {}  # 存储积分后的数据
@@ -179,48 +257,6 @@ for group_keys, data in integrated_data.items():
     fit_param_dict[(centrality, pair_type)] = (params1, params2)
 
 # 3. 计算信号分数
-if args.read_frac:
-    print('开启 --read-frac，直接从 mass_to_fs.csv 读取 fs_mass_1 和 fs_mass_2')
-    frac_df = pd.read_csv('mass_to_fs.csv')
-    # 构建查找表：centrality, particle, inv_mass_center -> fs_mass
-    frac_lookup = frac_df.set_index(['centrality', 'particle', 'inv_mass_center'])['fs_mass']
-    # 需要保证 centrality 类型一致
-    def get_fs(cent, particle, mass):
-        try:
-            return frac_lookup.loc[(cent, particle, mass)]
-        except KeyError:
-            return np.nan
-    fs_mass_1 = np.zeros(len(df))
-    fs_mass_2 = np.zeros(len(df))
-    for idx, row in df.iterrows():
-        cent = row['centrality']
-        mass1 = row['inv_mass_1_center']
-        mass2 = row['inv_mass_2_center']
-        pair_type = row['pair_type']
-        # 逻辑判断
-        if pair_type == 'LambdaLambda':
-            fs_mass_1[idx] = get_fs(cent, 'Lambda', mass1)
-            fs_mass_2[idx] = get_fs(cent, 'Lambda', mass2)
-        elif pair_type == 'LambdaLambdaBar':
-            fs_mass_1[idx] = get_fs(cent, 'Lambda', mass1)
-            fs_mass_2[idx] = get_fs(cent, 'LambdaBar', mass2)
-        elif pair_type == 'LambdaBarLambda':
-            fs_mass_1[idx] = get_fs(cent, 'LambdaBar', mass1)
-            fs_mass_2[idx] = get_fs(cent, 'Lambda', mass2)
-        elif pair_type == 'LambdaBarLambdaBar':
-            fs_mass_1[idx] = get_fs(cent, 'LambdaBar', mass1)
-            fs_mass_2[idx] = get_fs(cent, 'LambdaBar', mass2)
-        else:
-            fs_mass_1[idx] = np.nan
-            fs_mass_2[idx] = np.nan
-    df['fs_mass_1'] = fs_mass_1
-    df['fs_mass_2'] = fs_mass_2
-    df.drop(columns=['__rowid__'], inplace=True)
-    df.to_csv(output_csv, index=False)
-    print(f"已生成 {output_csv}（直接读取fs_mass_1/2）")
-    # 后续流程（信号总量统计/画图）可按需要保留或跳过
-    exit(0)
-
 fs_mass_1 = np.zeros(len(df))
 fs_mass_2 = np.zeros(len(df))
 
@@ -281,76 +317,6 @@ df.to_csv(output_csv, index=False)
 fit_param_df = pd.DataFrame(fit_param_records)
 fit_param_df.to_csv(params_csv, index=False)
 print(f"已生成 {output_csv}（含信号分数，{'强制大于0' if args.fs_force_non_neg else '允许为负值'}） 和 {params_csv}（拟合参数）")
-
-# 统计信号总量（每个中心度、pair_type、mass1和mass2）
-signal_sum_records = []
-for (centrality, pair_type), data in integrated_data.items():
-    # mass1
-    mass1_df = data['mass1']
-    params1 = fit_param_dict[(centrality, pair_type)][0]
-    in_signal_mask1 = (mass1_df['inv_mass_1_center'] >= SIGNAL_MIN) & (mass1_df['inv_mass_1_center'] <= SIGNAL_MAX)
-    y_obs1 = mass1_df.loc[in_signal_mask1, 'inv_mass_counts_intg2'].values
-    x1 = mass1_df.loc[in_signal_mask1, 'inv_mass_1_center'].values
-    y_bkg1 = exp_poly_func(x1, *params1)
-    signal_sum1 = np.sum(y_obs1 - y_bkg1)
-    bkg_sum1 = np.sum(y_bkg1)
-    signal_bkg_ratio1 = signal_sum1 / bkg_sum1 if bkg_sum1 != 0 else np.nan
-    # mass2
-    mass2_df = data['mass2']
-    params2 = fit_param_dict[(centrality, pair_type)][1]
-    in_signal_mask2 = (mass2_df['inv_mass_2_center'] >= SIGNAL_MIN) & (mass2_df['inv_mass_2_center'] <= SIGNAL_MAX)
-    y_obs2 = mass2_df.loc[in_signal_mask2, 'inv_mass_counts_intg1'].values
-    x2 = mass2_df.loc[in_signal_mask2, 'inv_mass_2_center'].values
-    y_bkg2 = exp_poly_func(x2, *params2)
-    signal_sum2 = np.sum(y_obs2 - y_bkg2)
-    bkg_sum2 = np.sum(y_bkg2)
-    signal_bkg_ratio2 = signal_sum2 / bkg_sum2 if bkg_sum2 != 0 else np.nan
-    signal_sum_records.append({
-        'centrality': centrality,
-        'pair_type': pair_type,
-        'signal_sum_mass1': signal_sum1,
-        'signal_sum_mass2': signal_sum2,
-        'signal_bkg_ratio_mass1': signal_bkg_ratio1,
-        'signal_bkg_ratio_mass2': signal_bkg_ratio2
-    })
-signal_sum_df = pd.DataFrame(signal_sum_records)
-signal_sum_csv = os.path.join(output_path, f'signal_sum_vs_centrality_{args.task}.csv')
-signal_sum_df.to_csv(signal_sum_csv, index=False)
-print(f"已生成信号总量文件: {signal_sum_csv}")
-
-# 如果flag打开，画信号总量和信号/背景比值随中心度变化的图
-if args.plot_signal_sum:
-    for mass_type, ylab in zip(['signal_sum_mass1', 'signal_sum_mass2'], ['Signal Sum (mass1)', 'Signal Sum (mass2)']):
-        plt.figure(figsize=(8,6))
-        for pair_type in signal_sum_df['pair_type'].unique():
-            sub = signal_sum_df[signal_sum_df['pair_type'] == pair_type]
-            plt.plot(sub['centrality'], sub[mass_type], 'o-', label=pair_type)
-        plt.xlabel('Centrality')
-        plt.ylabel(ylab)
-        plt.title(f'{ylab} vs Centrality')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        outfig = os.path.join(output_path, f'{mass_type}_vs_centrality_{args.task}.pdf')
-        plt.savefig(outfig)
-        print(f"已生成信号总量图: {outfig}")
-        plt.close()
-    # 画信号/背景比值
-    for mass_type, ylab in zip(['signal_bkg_ratio_mass1', 'signal_bkg_ratio_mass2'], ['Signal/Bkg Ratio (mass1)', 'Signal/Bkg Ratio (mass2)']):
-        plt.figure(figsize=(8,6))
-        for pair_type in signal_sum_df['pair_type'].unique():
-            sub = signal_sum_df[signal_sum_df['pair_type'] == pair_type]
-            plt.plot(sub['centrality'], sub[mass_type], 'o-', label=pair_type)
-        plt.xlabel('Centrality')
-        plt.ylabel(ylab)
-        plt.title(f'{ylab} vs Centrality')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        outfig = os.path.join(output_path, f'{mass_type}_vs_centrality_{args.task}.pdf')
-        plt.savefig(outfig)
-        print(f"已生成信号/背景比值图: {outfig}")
-        plt.close()
 
 def plot_grid_centralities(centrality_list, cendf_list, fit_param_dict, integrated_data, pair_type_key, mass_type):
     n = len(centrality_list)
@@ -418,9 +384,9 @@ for pair_type, subdf in pdf_groups:
         pair_type_key = str(pair_type[0]) if len(pair_type) == 1 else str(pair_type)
     else:
         pair_type_key = str(pair_type)
-    
+
     print(f"处理 pair_type: {pair_type} -> 使用key: {pair_type_key}")
-    
+
     # 生成mass_1的图
     pdfname1 = os.path.join(img_dir, f"fitplots_mass1_{pair_type_key}.pdf")
     centralities = sorted(subdf['centrality'].unique())

@@ -119,7 +119,8 @@ def run_analysis_pipeline(
     range_mass: float = 0.01,
     reso_file: str = "./resolutions.csv",
     fs_min: Optional[float] = None,
-    fs_max: Optional[float] = None
+    fs_max: Optional[float] = None,
+    no_read_frac: bool = False
 ) -> bool:
     """执行完整的分析流程"""
     # 构建基本参数
@@ -164,6 +165,10 @@ def run_analysis_pipeline(
             "-t", task,
             "-o", output_dir
         ]
+
+        # 默认使用read-frac模式，除非明确指定不使用
+        if not no_read_frac:
+            inv_mass_cmd.append("--read-frac")
 
         if not run_command(inv_mass_cmd, f"{task}/fit_inv_mass"):
             print(f"[{task}] fit_inv_mass.py 执行失败")
@@ -247,15 +252,18 @@ def main():
                        help="跳过fit_obvs.py步骤")
     parser.add_argument("--skip-finalise", action="store_true",
                        help="跳过finalise.py步骤")
+    parser.add_argument("--no-read-frac", action="store_true",
+                       help="不从文件读取信号分数，强制执行fit_inv_mass.py的拟合过程")
 
     # 分析参数
+    # 参数设置
     parser.add_argument("--flatten-mode", type=str, default="eff_cali",
                        choices=["raw_mass", "eff_cali"],
                        help="扁平化模式：raw_mass-使用原始质量分布，eff_cali-使用delta3的bin entries作为计数")
     parser.add_argument("--fs-force-non-neg", action="store_true",
                        help="强制信号分数非负（默认不启用）")
     parser.add_argument("--fit-mode", type=str, choices=['2Dfit', '1Dfit', 'narrMass', 'all'],
-                       default="2Dfit", help="拟合方法选择")
+                       default="2Dfit", help="拟合方法选择（仅影响fit_obvs.py）")
     parser.add_argument("--range-mass", type=float, default=0.0014,
                        help="质量窗口范围")
     parser.add_argument("-r", "--reso-file", type=str, default="./resolutions.csv",
@@ -338,7 +346,8 @@ def main():
             range_mass=args.range_mass,
             reso_file=args.reso_file,
             fs_min=args.fs_min,
-            fs_max=args.fs_max
+            fs_max=args.fs_max,
+            no_read_frac=args.no_read_frac
         )
 
         results[task] = success

@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import os
 import argparse
+import sys
 
 # 解析命令行参数
 parser = argparse.ArgumentParser(description='拟合不变质量谱并计算信号分数')
@@ -26,6 +27,8 @@ parser.add_argument('--poly-order', type=int, default=2,
                    help='背景拟合使用的多项式阶数')
 parser.add_argument('--maxfev', type=int, default=1000000,
                    help='curve_fit的最大函数评估次数')
+parser.add_argument('--read-frac', action='store_true',
+                   help='直接从inv_mass_frac_sig_{dataset}_ptint.csv读取fs_mass_1和fs_mass_2，不做拟合')
 args = parser.parse_args()
 
 # 固定粒子类型为Lambda
@@ -81,6 +84,85 @@ full_group_cols = ['pair_type']
 
 all_groups = df.groupby(group_cols)
 pdf_groups = df.groupby(full_group_cols)
+
+# 辅助函数：从查找表获取fs值
+def get_fs(lookup, cent, particle, mass):
+    try:
+        return lookup.loc[(cent, particle, mass)]
+    except KeyError:
+        return np.nan
+
+# 检查是否需要直接读取分数
+if args.read_frac:
+    # 尝试几种可能的文件路径
+    possible_paths = [
+        f"../inv_mass_fitter/inv_mass_frac_sig_{args.dataset.replace('LHC', '')}_ptint.csv"
+    ]
+
+    ptint_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            ptint_path = path
+            break
+
+    if ptint_path is None:
+        print(f"错误：开启了--read-frac，但找不到信号分数文件。尝试的路径:")
+        for path in possible_paths:
+            print(f"  - {path}")
+        print("请确保文件存在或关闭--read-frac选项。")
+        sys.exit(1)
+
+    print(f'开启 --read-frac，直接从{ptint_path}读取fs_mass_1和fs_mass_2')
+
+    try:
+        frac_df = pd.read_csv(ptint_path)
+        print(f"成功读取文件: {ptint_path}")
+
+        # 构建查找表：centrality, particle, inv_mass_mean -> fs
+        frac_lookup = frac_df.set_index(['centrality', 'particle', 'inv_mass_mean'])['fs']
+
+        # 获取fs_mass_1和fs_mass_2
+        fs_mass_1 = np.zeros(len(df))
+        fs_mass_2 = np.zeros(len(df))
+
+        for idx, row in df.iterrows():
+            cent = row['centrality']
+            mass1 = row['inv_mass_1_center']
+            mass2 = row['inv_mass_2_center']
+            pair_type = row['pair_type']
+
+            # 根据pair_type确定对应的粒子类型
+            if pair_type == 'LambdaLambda':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'Lambda', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'Lambda', mass2)
+            elif pair_type == 'LambdaLambdaBar':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'Lambda', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass2)
+            elif pair_type == 'LambdaBarLambda':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'Lambda', mass2)
+            elif pair_type == 'LambdaBarLambdaBar':
+                fs_mass_1[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass1)
+                fs_mass_2[idx] = get_fs(frac_lookup, cent, 'LambdaBar', mass2)
+            else:
+                fs_mass_1[idx] = np.nan
+                fs_mass_2[idx] = np.nan
+
+        df['fs_mass_1'] = fs_mass_1
+        df['fs_mass_2'] = fs_mass_2
+        df.drop(columns=['__rowid__'], inplace=True)
+        df.to_csv(output_csv, index=False)
+        print(f"已生成 {output_csv}（直接读取fs_mass_1/2）")
+
+        # 直接退出，不执行任何拟合或图像生成逻辑
+        print("--read-frac 模式已完成，跳过拟合和图像生成过程")
+        sys.exit(0)
+    except Exception as e:
+        print(f"错误：读取或处理文件时出错: {str(e)}")
+        sys.exit(1)
+
+# ========================== 以下是拟合和图像生成逻辑 ==========================
+# 这部分代码只在未启用--read-frac或读取失败时执行
 
 # 存储积分结果和拟合参数
 integrated_data = {}  # 存储积分后的数据
@@ -302,9 +384,9 @@ for pair_type, subdf in pdf_groups:
         pair_type_key = str(pair_type[0]) if len(pair_type) == 1 else str(pair_type)
     else:
         pair_type_key = str(pair_type)
-    
+
     print(f"处理 pair_type: {pair_type} -> 使用key: {pair_type_key}")
-    
+
     # 生成mass_1的图
     pdfname1 = os.path.join(img_dir, f"fitplots_mass1_{pair_type_key}.pdf")
     centralities = sorted(subdf['centrality'].unique())
