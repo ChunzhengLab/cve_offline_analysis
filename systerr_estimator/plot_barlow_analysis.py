@@ -138,21 +138,59 @@ def create_plots_for_source(df, source_name, default_df, output_dir, particle_ty
             print(f"    No source data for combination {diff_type}, {diff_bin}")
             continue
             
-        # Create delta plot
-        create_single_plot(source_data, default_data, source_name, 'delta', 
-                          diff_type, diff_bin, output_dir, particle_type, diff_label, max_cent)
-        
-        # Create gamma plot
-        create_single_plot(source_data, default_data, source_name, 'gamma', 
-                          diff_type, diff_bin, output_dir, particle_type, diff_label, max_cent)
+        # Create combined plot (delta and gamma side by side)
+        create_combined_plot(source_data, default_data, source_name, 
+                            diff_type, diff_bin, output_dir, particle_type, diff_label, max_cent)
 
-def create_single_plot(source_data, default_data, source_name, value_type, 
-                      diff_type, diff_bin, output_dir, particle_type, diff_label, max_cent):
+def get_pair_label(particle_type):
+    """Get pair label based on particle type"""
+    if particle_type == 'Proton':
+        return 'Lambda-Proton Pair'
+    elif particle_type == 'Lambda':
+        return 'Lambda-Lambda Pair'
+    elif particle_type == 'Hadron':
+        return 'Lambda-Hadron'
+    else:
+        return f'{particle_type} Pair'
+
+def get_diff_label(diff_type, diff_bin):
+    """Get differential label based on diff_type and diff_bin"""
+    if diff_type == 'Intg':
+        return 'Intg'
+    elif diff_type == 'SPt':
+        if diff_bin == '0.5':
+            return '1.0 < pT < 3.0 GeV/c'
+        elif diff_bin == '1.5':
+            return '3.0 < pT < 5.0 GeV/c'
+        elif diff_bin == '2.5':
+            return '5.0 < pT < 8.0 GeV/c'
+        else:
+            return f'SPt {diff_bin}'
+    elif diff_type == 'DEta':
+        if diff_bin == '0.5':
+            return '|Δη| < 0.6'
+        elif diff_bin == '1.5':
+            return '|Δη| > 0.6'
+        else:
+            return f'DEta {diff_bin}'
+    else:
+        return f'{diff_type} {diff_bin}' if diff_bin else str(diff_type)
+
+def create_combined_plot(source_data, default_data, source_name, 
+                        diff_type, diff_bin, output_dir, particle_type, diff_label, max_cent):
     """
-    Create a single plot (delta or gamma) with two subplots
+    Create a combined plot with delta and gamma side by side, with Barlow ratios below
     """
-    # Setup figure
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 12))
+    # Setup figure with 2x2 subplots: delta/gamma on top (larger), Barlow ratios below (smaller)
+    fig = plt.figure(figsize=(16, 10))
+    
+    # Create subplots with different height ratios
+    gs = fig.add_gridspec(2, 2, height_ratios=[3, 1], hspace=0.3, wspace=0.3)
+    
+    ax1 = fig.add_subplot(gs[0, 0])  # Delta values (top left)
+    ax2 = fig.add_subplot(gs[0, 1])  # Gamma values (top right)
+    ax3 = fig.add_subplot(gs[1, 0])  # Delta Barlow ratio (bottom left)
+    ax4 = fig.add_subplot(gs[1, 1])  # Gamma Barlow ratio (bottom right)
     
     # Define colors and markers for pair types
     pair_colors = {'OS': 'red', 'SS': 'blue', 'Del': 'green'}
@@ -161,93 +199,109 @@ def create_single_plot(source_data, default_data, source_name, value_type,
     # Offset for x-axis positioning
     offset = 1.0
     
-    # Get centralities
-    centralities = sorted(source_data['centrality'].unique())
-    centralities = [c for c in centralities if c <= max_cent]
+    # Get labels
+    pair_label = get_pair_label(particle_type)
+    combo_label = get_diff_label(diff_type, diff_bin)
     
-    # First subplot: Values vs centrality
-    for pair_type in ['OS', 'SS', 'Del']:
-        # Default data
-        default_pair = default_data[default_data['pair_type'] == pair_type]
-        if len(default_pair) > 0:
-            x_default = [c - offset for c in default_pair['centrality']]
-            y_default = default_pair[value_type]
-            ax1.errorbar(x_default, y_default, yerr=default_pair[f'{value_type}_err'],
-                        fmt=pair_markers[pair_type], color=pair_colors[pair_type], 
-                        alpha=0.7, label=f'Default {pair_type}', markersize=6)
-        
-        # Source data
-        source_pair = source_data[source_data['pair_type'] == pair_type]
-        if len(source_pair) > 0:
-            x_source = [c + offset for c in source_pair['centrality']]
-            y_source = source_pair[value_type]
-            ax1.errorbar(x_source, y_source, yerr=source_pair[f'{value_type}_err'],
-                        fmt=pair_markers[pair_type], color=pair_colors[pair_type], 
-                        alpha=1.0, label=f'{source_name} {pair_type}', markersize=6,
-                        markerfacecolor='none', markeredgewidth=2)
-    
-    ax1.set_xlabel('Centrality (%)')
-    ax1.set_ylabel(f'{value_type.capitalize()}')
-    ax1.legend()
-    ax1.grid(True, alpha=0.3)
-    ax1.set_xlim(0, max_cent + 5)
-    
-    # Title for first subplot
-    title1 = f'{source_name} - {value_type.capitalize()} vs Centrality'
-    if diff_type or diff_bin:
-        title1 += f' (diff_type: {diff_type}, diff_bin: {diff_bin})'
-    ax1.set_title(title1)
-    
-    # Second subplot: Barlow ratio vs centrality (histogram style)
-    barlow_col = f'{value_type}_barlow_ratio'
-    
-    # Create histogram-style plot for each pair type
-    for pair_type in ['OS', 'SS', 'Del']:
-        source_pair = source_data[source_data['pair_type'] == pair_type]
-        if len(source_pair) > 0:
-            x_values = source_pair['centrality']
-            y_values = source_pair[barlow_col]
+    # Function to plot values and Barlow ratios for one variable
+    def plot_one_variable(ax_values, ax_barlow, value_type):
+        # Values subplot
+        for pair_type in ['OS', 'SS', 'Del']:
+            # Default data
+            default_pair = default_data[default_data['pair_type'] == pair_type]
+            if len(default_pair) > 0:
+                x_default = [c - offset for c in default_pair['centrality']]
+                y_default = default_pair[value_type]
+                ax_values.errorbar(x_default, y_default, yerr=default_pair[f'{value_type}_err'],
+                            fmt=pair_markers[pair_type], color=pair_colors[pair_type], 
+                            alpha=0.7, label=f'Default {pair_type}', markersize=6)
             
-            # Only plot non-NaN values
-            valid_mask = ~pd.isna(y_values)
-            if valid_mask.sum() > 0:
-                x_valid = x_values[valid_mask]
-                y_valid = y_values[valid_mask]
+            # Source data
+            source_pair = source_data[source_data['pair_type'] == pair_type]
+            if len(source_pair) > 0:
+                x_source = [c + offset for c in source_pair['centrality']]
+                y_source = source_pair[value_type]
+                ax_values.errorbar(x_source, y_source, yerr=source_pair[f'{value_type}_err'],
+                            fmt=pair_markers[pair_type], color=pair_colors[pair_type], 
+                            alpha=1.0, label=f'{source_name} {pair_type}', markersize=6,
+                            markerfacecolor='none', markeredgewidth=2)
+        
+        ax_values.set_xlabel('Centrality (%)')
+        ax_values.set_ylabel(f'{value_type.capitalize()}')
+        ax_values.legend(fontsize=8)
+        ax_values.grid(True, alpha=0.3)
+        ax_values.set_xlim(0, max_cent + 5)
+        
+        # Add information annotation
+        info_text = f"{pair_label}\n{source_name}\n{combo_label}\n{value_type.capitalize()}"
+        ax_values.text(0.05, 0.95, info_text, transform=ax_values.transAxes, 
+                      verticalalignment='top', fontsize=10,
+                      bbox=dict(boxstyle='round,pad=0.3', facecolor='lightblue', alpha=0.8))
+        
+        # Barlow ratio subplot
+        barlow_col = f'{value_type}_barlow_ratio'
+        
+        for pair_type in ['OS', 'SS', 'Del']:
+            source_pair = source_data[source_data['pair_type'] == pair_type]
+            if len(source_pair) > 0:
+                x_values_data = source_pair['centrality']
+                y_values_data = source_pair[barlow_col]
                 
-                # Draw horizontal lines for each bin (histogram style)
-                for x, y in zip(x_valid, y_valid):
-                    # Draw horizontal line from x-2.5 to x+2.5
-                    ax2.plot([x-2.5, x+2.5], [y, y], color=pair_colors[pair_type], 
-                            linewidth=3, alpha=0.8, label=f'{pair_type}' if x == x_valid.iloc[0] else "")
-                    # Add vertical lines at the edges for clarity
-                    ax2.plot([x-2.5, x-2.5], [0, y], color=pair_colors[pair_type], 
-                            linewidth=1, alpha=0.5)
-                    ax2.plot([x+2.5, x+2.5], [0, y], color=pair_colors[pair_type], 
-                            linewidth=1, alpha=0.5)
+                # Only plot non-NaN values
+                valid_mask = ~pd.isna(y_values_data)
+                if valid_mask.sum() > 0:
+                    x_valid = x_values_data[valid_mask]
+                    y_valid = y_values_data[valid_mask]
+                    
+                    # Draw horizontal lines for each bin (histogram style)
+                    for x, y in zip(x_valid, y_valid):
+                        # Draw horizontal line from x-2.5 to x+2.5
+                        ax_barlow.plot([x-2.5, x+2.5], [y, y], color=pair_colors[pair_type], 
+                                linewidth=3, alpha=0.8, label=f'{pair_type}' if x == x_valid.iloc[0] else "")
+                        # Add vertical lines at the edges for clarity
+                        ax_barlow.plot([x-2.5, x-2.5], [0, y], color=pair_colors[pair_type], 
+                                linewidth=1, alpha=0.5)
+                        ax_barlow.plot([x+2.5, x+2.5], [0, y], color=pair_colors[pair_type], 
+                                linewidth=1, alpha=0.5)
+        
+        # Add reference line at y=1
+        ax_barlow.axhline(y=1, color='black', linestyle='--', alpha=0.7, label='Threshold')
+        
+        ax_barlow.set_xlabel('Centrality (%)')
+        ax_barlow.set_ylabel(f'{value_type.capitalize()} Barlow Ratio')
+        ax_barlow.legend(fontsize=8)
+        ax_barlow.grid(True, alpha=0.3)
+        ax_barlow.set_xlim(0, max_cent + 5)
     
-    # Add reference line at y=1
-    ax2.axhline(y=1, color='black', linestyle='--', alpha=0.7, label='Reference (y=1)')
+    # Plot delta (left) and gamma (right)
+    plot_one_variable(ax1, ax3, 'delta')
+    plot_one_variable(ax2, ax4, 'gamma')
     
-    ax2.set_xlabel('Centrality (%)')
-    ax2.set_ylabel(f'{value_type.capitalize()} Barlow Ratio')
-    ax2.legend()
-    ax2.grid(True, alpha=0.3)
-    ax2.set_xlim(0, max_cent + 5)
-    
-    # Title for second subplot
-    title2 = f'{source_name} - {value_type.capitalize()} Barlow Ratio vs Centrality'
-    if diff_type or diff_bin:
-        title2 += f' (diff_type: {diff_type}, diff_bin: {diff_bin})'
-    ax2.set_title(title2)
-    
-    plt.tight_layout()
+    # Set main title
+    main_title = f'{source_name} - {pair_label} - {combo_label}'
+    fig.suptitle(main_title, fontsize=14, y=0.95)
     
     # Create particle-specific output directory
     particle_output_dir = os.path.join(output_dir, particle_type)
     os.makedirs(particle_output_dir, exist_ok=True)
     
-    # Save plot with improved filename format
-    filename = f"{source_name}_{value_type}_{diff_label}.pdf"
+    # Create more descriptive filename
+    # Clean up source name for filename
+    safe_source_name = source_name.replace('/', '_').replace(' ', '_')
+    
+    # Create descriptive filename parts
+    filename_parts = [safe_source_name]
+    
+    if diff_type and diff_bin:
+        filename_parts.append(f"{diff_type}_{diff_bin}")
+    elif diff_type:
+        filename_parts.append(diff_type)
+    elif diff_bin:
+        filename_parts.append(f"bin_{diff_bin}")
+    
+    filename_parts.append("barlow_analysis")
+    
+    filename = "_".join(filename_parts) + ".pdf"
     filepath = os.path.join(particle_output_dir, filename)
     plt.savefig(filepath, format='pdf', bbox_inches='tight', dpi=300)
     plt.close()
@@ -255,7 +309,7 @@ def create_single_plot(source_data, default_data, source_name, value_type,
     print(f"    Saved plot: {filepath}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate systematic error plots for each source')
+    parser = argparse.ArgumentParser(description='Generate Barlow ratio analysis plots for each systematic error source')
     parser.add_argument('--input', type=str, required=True,
                       help='Input CSV file (e.g., barlow_finalise_sys_Proton.csv)')
     parser.add_argument('--output-dir', type=str, default='./plots',

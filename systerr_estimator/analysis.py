@@ -52,8 +52,8 @@ def parse_arguments():
     # Parameters for different steps
     parser.add_argument('--threshold', type=float, default=1.0,
                       help='Threshold for Barlow ratio significance (default: 1.0)')
-    parser.add_argument('--min-occurrences', type=int, default=2,
-                      help='Minimum number of occurrences to consider a source as systematic (default: 2)')
+    parser.add_argument('--min-occurrences', type=int, default=8,
+                      help='Minimum number of occurrences to consider a source as systematic (default: 8) currently this rule should not be used!)')
     parser.add_argument('--max-cent', type=int, default=60,
                       help='Maximum centrality value to consider (default: 60)')
 
@@ -70,6 +70,8 @@ def parse_arguments():
                       help='Skip the systematic source determination step')
     parser.add_argument('--skip-contrib', action='store_true',
                       help='Skip the contribution fraction calculation step')
+    parser.add_argument('--generate-barlow-plots', action='store_true',
+                      help='Generate Barlow ratio plots for each systematic error source')
     parser.add_argument('--ignore-diff', action='store_true',
                       help='Ignore diff_type and diff_bin columns in matching (useful for Lambda data)')
     parser.add_argument('--verbose', action='store_true',
@@ -185,6 +187,20 @@ def main():
 
     run_command(finalise_cmd, "Generating final systematic error values")
 
+    # Optional: Generate Barlow ratio plots
+    if args.generate_barlow_plots:
+        plots_output_dir = os.path.join(base_output_dir, "barlow_plots")
+
+        barlow_plots_cmd = (f"python3 plot_barlow_analysis.py "
+                           f"--input {barlow_output} "
+                           f"--output-dir {plots_output_dir} "
+                           f"--max-cent {args.max_cent}")
+
+        if args.verbose:
+            barlow_plots_cmd += " --verbose"
+
+        run_command(barlow_plots_cmd, "Generating Barlow ratio plots for each source")
+
     print("\n=== Analysis Complete ===")
     print(f"Final output file: {final_output}")
 
@@ -196,6 +212,10 @@ def main():
     print(f"4. Contribution fractions: {contrib_output}")
     print(f"   Formatted contributions: {formatted_contrib_output}")
     print(f"5. Final results: {final_output}")
+
+    if args.generate_barlow_plots:
+        plots_output_dir = os.path.join(base_output_dir, "barlow_plots")
+        print(f"6. Barlow ratio plots: {plots_output_dir}")
 
 if __name__ == "__main__":
     main()
