@@ -23,8 +23,13 @@ def calculate_fp(centrality):
     # 读取CSV文件
     df = pd.read_csv("../src_fraction_fit/results/integration_results.csv")
 
-    # 筛选指定中心度的数据
-    df_cent = df[df['Centrality'] == centrality]
+    # 筛选指定中心度的数据，兼容int/float
+    cent_mask = (abs(df['Centrality'] - centrality) < 1e-2)
+    df_cent = df[cent_mask]
+    if len(df_cent) == 0:
+        print(f"  [ERROR] No data for centrality={centrality} (type={type(centrality)})")
+        print(f"  [DEBUG] Centrality in file: {df['Centrality'].unique()}")
+        return np.nan, np.nan
 
     # 计算18q和18r的平均值
     df_avg = df_cent.groupby('Particle').agg({
@@ -33,8 +38,14 @@ def calculate_fp(centrality):
     }).reset_index()
 
     # 获取质子和反质子的数据
-    p_data = df_avg[df_avg['Particle'] == 'proton'].iloc[0]
-    ap_data = df_avg[df_avg['Particle'] == 'antiproton'].iloc[0]
+    p_rows = df_avg[df_avg['Particle'] == 'proton']
+    ap_rows = df_avg[df_avg['Particle'] == 'antiproton']
+    if len(p_rows) == 0 or len(ap_rows) == 0:
+        print(f"  [ERROR] No proton/antiproton data for centrality={centrality}")
+        print(f"  [DEBUG] Particle in group: {df_avg['Particle'].unique()}")
+        return np.nan, np.nan
+    p_data = p_rows.iloc[0]
+    ap_data = ap_rows.iloc[0]
 
     # 计算最终的平均值
     fp = (p_data['Primary/Total'] + ap_data['Primary/Total']) / 2
@@ -47,7 +58,7 @@ def calculate_ratio_lpsec_ll():
     Return the ratio between O_lpsec and O_ll, and its error.
     Default: ratio = 0.9033 ± 0.0436
     """
-    ratio = 1.
+    ratio = 1
     ratio_err = 0.
     return ratio, ratio_err
 
@@ -250,18 +261,6 @@ def process_all_tasks(proton_dir="../dataset_merger/Merged/Proton",
     for task in task_names:
         print(f"\n  Processing task: {task}")
 
-        # 从任务名称中提取中心度
-        try:
-            centrality = int(task.split('_')[0])  # 假设任务名称格式为 "centX_..."
-        except (ValueError, IndexError):
-            print(f"    Warning: Could not extract centrality from task name {task}, using default")
-            centrality = 25  # 默认使用25%中心度
-
-        # 计算该中心度的fp
-        fp, fp_err = calculate_fp(centrality)
-        print(f"    Using fp = {fp:.6f} ± {fp_err:.6f} for centrality {centrality}%")
-
-        # 加载Proton数据
         proton_file = f"{proton_dir}/finalise_{task}.csv"
         if not os.path.exists(proton_file):
             print(f"    Error: Proton file not found: {proton_file}")
@@ -272,19 +271,28 @@ def process_all_tasks(proton_dir="../dataset_merger/Merged/Proton",
 
         # 加载Lambda数据
         lambda_df = load_lambda_data(task, lambda_dir)
-
         if lambda_df is None:
             print(f"    Skipping {task} due to missing Lambda data")
             continue
 
-        # 处理数据
-        result_df = process_proton_data(proton_df, lambda_df, fp, fp_err)
-
-        if result_df is not None:
+        # 获取所有unique centrality
+        all_centralities = sorted(proton_df['centrality'].unique())
+        result_df_list = []
+        for centrality in all_centralities:
+            fp, fp_err = calculate_fp(centrality)
+            print(f"    Using fp = {fp:.6f} ± {fp_err:.6f} for centrality {centrality}%")
+            # 只处理当前centrality的数据
+            sub_proton_df = proton_df[proton_df['centrality'] == centrality].copy()
+            # 处理数据
+            result_df = process_proton_data(sub_proton_df, lambda_df, fp, fp_err)
+            if result_df is not None:
+                result_df_list.append(result_df)
+        if result_df_list:
+            final_result_df = pd.concat(result_df_list, ignore_index=True)
             # 保存结果
             output_file = f"{output_dir}/finalise_feeddown_dispose_{task}.csv"
             try:
-                result_df.to_csv(output_file, index=False)
+                final_result_df.to_csv(output_file, index=False)
                 print(f"    ✓ Saved: {output_file}")
                 successful_processes += 1
             except Exception as e:

@@ -71,55 +71,40 @@ def load_all_data():
     combined_data = pd.concat(all_data, ignore_index=True)
     return combined_data
 
+def get_main_pair_types(data):
+    # 只保留并按顺序返回指定的三种pair_type
+    wanted = ['LambdaLambda', 'LambdaLambdaBar', 'LambdaBarLambdaBar']
+    available = [pt for pt in wanted if pt in data['pair_type'].unique()]
+    return available
+
 def create_delta_plots(data, ss_only=False):
     """Create Delta parameters comparison plots"""
-    # Get unique pair_types
-    pair_types = data['pair_type'].unique()
+    pair_types = get_main_pair_types(data)
     methods = data['method'].unique()
-
-    # 使用全局定义的颜色方案
     colors = COLORS
-
-    # Create 2x2 subplots
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
     fig.suptitle('Delta Parameters vs Centrality: Method Comparison',
                  fontsize=20, fontweight='bold', y=0.98)
-
-    axes = axes.flatten()
-
+    if len(pair_types) == 1:
+        axes = [axes]
     for i, pair_type in enumerate(pair_types):
-        if i >= 4:  # Only process first 4 pair_types
-            break
-
         ax = axes[i]
-
-        # Filter data for current pair_type
         pair_data = data[data['pair_type'] == pair_type]
-
-        # Plot data for each method
         for method in methods:
             method_data = pair_data[pair_data['method'] == method]
             if len(method_data) == 0:
                 continue
-
             centrality = method_data['centrality']
             color = colors.get(method, '#95a5a6')
-
-            # 为不同方法选择不同的线型
             linestyle = '-'
             if method == 'Narrow Mass Range':
                 linestyle = '--'
             elif method == 'Narrow Mass':
                 linestyle = '-.'
-
-            # Plot delta parameters with error bars
             ax.errorbar(centrality, method_data['delta_ss'], yerr=method_data['delta_ss_err'],
                    fmt='o'+linestyle, color=color, alpha=0.8, linewidth=2.5, markersize=7,
                    label=f'{method} - δ_ss', capsize=4)
-
-            # Only plot sb and bb if ss_only is False
             if not ss_only:
-                # For 1D fit, plot bb instead of sb
                 if method == '1D Fit':
                     ax.errorbar(centrality, method_data['delta_bb'], yerr=method_data['delta_bb_err'],
                            fmt='s--', color=color, alpha=0.8, linewidth=2.5, markersize=7,
@@ -128,160 +113,107 @@ def create_delta_plots(data, ss_only=False):
                     ax.errorbar(centrality, method_data['delta_sb'], yerr=method_data['delta_sb_err'],
                            fmt='s--', color=color, alpha=0.8, linewidth=2.5, markersize=7,
                            label=f'{method} - δ_sb', capsize=4)
-
-                # Plot delta_bb if not all zeros (for 2D and Narrow Mass)
                 if method != '1D Fit' and not (method_data['delta_bb'] == 0).all():
                     ax.errorbar(centrality, method_data['delta_bb'], yerr=method_data['delta_bb_err'],
                            fmt='^:', color=color, alpha=0.8, linewidth=2, markersize=6,
                            label=f'{method} - δ_bb', capsize=4)
-
-        # Set subplot properties
         ax.set_title(f'{pair_type}', fontsize=14, fontweight='bold', pad=20)
         ax.set_xlabel('Centrality (%)', fontsize=12)
         ax.set_ylabel('Delta Parameter Value', fontsize=12)
         ax.grid(True, alpha=0.3)
         ax.axhline(y=0, color='black', linestyle='-', alpha=0.3, linewidth=0.8)
-
-        # Set legend
         if i == 0:
-            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)
-
+            ax.legend(loc='best', fontsize=9)
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    output_filename = 'delta_parameters_comparison_ss_only.png' if ss_only else 'delta_parameters_comparison.png'
+    output_filename = 'delta_parameters_comparison_ss_only.pdf' if ss_only else 'delta_parameters_comparison.pdf'
     plt.savefig(output_filename, dpi=300, bbox_inches='tight')
     plt.show()
 
 def create_gamma_plots(data, ss_only=False):
     """Create Gamma parameters comparison plots"""
-    # Get unique pair_types
-    pair_types = data['pair_type'].unique()
+    pair_types = get_main_pair_types(data)
     methods = data['method'].unique()
-
-    # Use global color scheme
     colors = COLORS
-
-    # Create 2x2 subplots
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
     fig.suptitle('Gamma Parameters vs Centrality: Method Comparison',
                  fontsize=20, fontweight='bold', y=0.98)
-
-    axes = axes.flatten()
-
+    if len(pair_types) == 1:
+        axes = [axes]
     for i, pair_type in enumerate(pair_types):
-        if i >= 4:  # Only process first 4 pair_types
-            break
-
         ax = axes[i]
-
-        # Filter data for current pair_type
         pair_data = data[data['pair_type'] == pair_type]
-
-        # Plot data for each method
         for method in methods:
             method_data = pair_data[pair_data['method'] == method]
             if len(method_data) == 0:
                 continue
-
             centrality = method_data['centrality']
             color = colors.get(method, '#95a5a6')
-
-            # 为不同方法选择不同的线型
             linestyle = '-'
             if method == 'Narrow Mass Range':
                 linestyle = '--'
             elif method == 'Narrow Mass':
                 linestyle = '-.'
-
-            # Plot gamma parameters
-            ax.plot(centrality, method_data['rawgamma_ss'],
-                   'o'+linestyle, color=color, alpha=0.8, linewidth=2.5, markersize=7,
-                   label=f'{method} - γ_ss')
-
-            # Only plot sb and bb if ss_only is False
+            ax.errorbar(centrality, method_data['rawgamma_ss'], yerr=method_data['rawgamma_ss_err'],
+                   fmt='o'+linestyle, color=color, alpha=0.8, linewidth=2.5, markersize=7,
+                   label=f'{method} - γ_ss', capsize=4)
             if not ss_only:
-                # For 1D fit, plot bb instead of sb
                 if method == '1D Fit':
-                    ax.plot(centrality, method_data['rawgamma_bb'],
-                           's--', color=color, alpha=0.8, linewidth=2.5, markersize=7,
-                           label=f'{method} - γ_bb')
+                    ax.errorbar(centrality, method_data['rawgamma_bb'], yerr=method_data['rawgamma_bb_err'],
+                           fmt='s--', color=color, alpha=0.8, linewidth=2.5, markersize=7,
+                           label=f'{method} - γ_bb', capsize=4)
                 else:
-                    ax.plot(centrality, method_data['rawgamma_sb'],
-                           's--', color=color, alpha=0.8, linewidth=2.5, markersize=7,
-                           label=f'{method} - γ_sb')
-
-                # Plot rawgamma_bb if not all zeros (for 2D and Narrow Mass)
+                    ax.errorbar(centrality, method_data['rawgamma_sb'], yerr=method_data['rawgamma_sb_err'],
+                           fmt='s--', color=color, alpha=0.8, linewidth=2.5, markersize=7,
+                           label=f'{method} - γ_sb', capsize=4)
                 if method != '1D Fit' and not (method_data['rawgamma_bb'] == 0).all():
-                    ax.plot(centrality, method_data['rawgamma_bb'],
-                           '^:', color=color, alpha=0.8, linewidth=2, markersize=6,
-                           label=f'{method} - γ_bb')
-
-        # Set subplot properties
+                    ax.errorbar(centrality, method_data['rawgamma_bb'], yerr=method_data['rawgamma_bb_err'],
+                           fmt='^:', color=color, alpha=0.8, linewidth=2, markersize=6,
+                           label=f'{method} - γ_bb', capsize=4)
         ax.set_title(f'{pair_type}', fontsize=14, fontweight='bold', pad=20)
         ax.set_xlabel('Centrality (%)', fontsize=12)
         ax.set_ylabel('Gamma Parameter Value', fontsize=12)
         ax.grid(True, alpha=0.3)
         ax.axhline(y=0, color='black', linestyle='-', alpha=0.3, linewidth=0.8)
-
-        # Set legend
         if i == 0:
-            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)
-
+            ax.legend(loc='best', fontsize=9)
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    output_filename = 'gamma_parameters_comparison_ss_only.png' if ss_only else 'gamma_parameters_comparison.png'
+    output_filename = 'gamma_parameters_comparison_ss_only.pdf' if ss_only else 'gamma_parameters_comparison.pdf'
     plt.savefig(output_filename, dpi=300, bbox_inches='tight')
     plt.show()
 
 def create_delta_ratio_plots(data):
     """Create Delta SS ratio plots: (2D or 1D) / Narrow Mass and Narrow Mass Range"""
-    pair_types = data['pair_type'].unique()
-
-    # Create 2x2 subplots
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    pair_types = get_main_pair_types(data)
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
     fig.suptitle('Delta SS Parameter Ratios vs Centrality: Methods / Reference',
                  fontsize=20, fontweight='bold', y=0.98)
-
-    axes = axes.flatten()
-
+    if len(pair_types) == 1:
+        axes = [axes]
     for i, pair_type in enumerate(pair_types):
-        if i >= 4:
-            break
-
         ax = axes[i]
         pair_data = data[data['pair_type'] == pair_type]
-
-        # Get data for each method
         narrow_data = pair_data[pair_data['method'] == 'Narrow Mass']
         narrow_range_data = pair_data[pair_data['method'] == 'Narrow Mass Range']
         twod_data = pair_data[pair_data['method'] == '2D Fit']
         oned_data = pair_data[pair_data['method'] == '1D Fit']
-
-        # Calculate ratios for 2D/Narrow Mass
         if len(twod_data) > 0 and len(narrow_data) > 0:
-            # Merge on centrality to ensure matching points
             merged_2d = pd.merge(twod_data, narrow_data, on='centrality', suffixes=('_2d', '_narrow'))
             if len(merged_2d) > 0:
                 ratio_2d = merged_2d['delta_ss_2d'] / merged_2d['delta_ss_narrow']
-                # Handle division by zero or near zero
                 ratio_2d = ratio_2d.replace([np.inf, -np.inf], np.nan)
                 ax.plot(merged_2d['centrality'], ratio_2d,
                        'o-', color='#e74c3c', alpha=0.8, linewidth=2.5, markersize=7,
                        label='2D Fit / Narrow Mass')
-
-        # Calculate ratios for 2D/Narrow Mass Range
         if len(twod_data) > 0 and len(narrow_range_data) > 0:
-            # Merge on centrality to ensure matching points
             merged_2d_range = pd.merge(twod_data, narrow_range_data, on='centrality', suffixes=('_2d', '_narrow_range'))
             if len(merged_2d_range) > 0:
                 ratio_2d_range = merged_2d_range['delta_ss_2d'] / merged_2d_range['delta_ss_narrow_range']
-                # Handle division by zero or near zero
                 ratio_2d_range = ratio_2d_range.replace([np.inf, -np.inf], np.nan)
                 ax.plot(merged_2d_range['centrality'], ratio_2d_range,
                        'o--', color='#9b59b6', alpha=0.8, linewidth=2.5, markersize=7,
                        label='2D Fit / Narrow Mass Range')
-
-        # Calculate ratios for 1D/Narrow Mass
         if len(oned_data) > 0 and len(narrow_data) > 0:
             merged_1d = pd.merge(oned_data, narrow_data, on='centrality', suffixes=('_1d', '_narrow'))
             if len(merged_1d) > 0:
@@ -290,8 +222,6 @@ def create_delta_ratio_plots(data):
                 ax.plot(merged_1d['centrality'], ratio_1d,
                        's--', color='#3498db', alpha=0.8, linewidth=2.5, markersize=7,
                        label='1D Fit / Narrow Mass')
-
-        # Calculate ratios for 1D/Narrow Mass Range
         if len(oned_data) > 0 and len(narrow_range_data) > 0:
             merged_1d_range = pd.merge(oned_data, narrow_range_data, on='centrality', suffixes=('_1d', '_narrow_range'))
             if len(merged_1d_range) > 0:
@@ -300,71 +230,49 @@ def create_delta_ratio_plots(data):
                 ax.plot(merged_1d_range['centrality'], ratio_1d_range,
                        's-.', color='#f39c12', alpha=0.8, linewidth=2.5, markersize=7,
                        label='1D Fit / Narrow Mass Range')
-
-        # Set subplot properties
         ax.set_title(f'{pair_type}', fontsize=14, fontweight='bold', pad=20)
         ax.set_xlabel('Centrality (%)', fontsize=12)
         ax.set_ylabel('Delta SS Ratio', fontsize=12)
         ax.grid(True, alpha=0.3)
         ax.axhline(y=1, color='black', linestyle='-', alpha=0.5, linewidth=1)
-
         if i == 0:
-            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=10)
-
+            ax.legend(loc='best', fontsize=10)
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    plt.savefig('delta_ratio_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('delta_ratio_analysis.pdf', dpi=300, bbox_inches='tight')
     plt.show()
 
 def create_gamma_ratio_plots(data):
     """Create Gamma SS ratio plots: (2D or 1D) / Narrow Mass and Narrow Mass Range"""
-    pair_types = data['pair_type'].unique()
-
-    # Create 2x2 subplots
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    pair_types = get_main_pair_types(data)
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
     fig.suptitle('Gamma SS Parameter Ratios vs Centrality: Methods / Reference',
                  fontsize=20, fontweight='bold', y=0.98)
-
-    axes = axes.flatten()
-
+    if len(pair_types) == 1:
+        axes = [axes]
     for i, pair_type in enumerate(pair_types):
-        if i >= 4:
-            break
-
         ax = axes[i]
         pair_data = data[data['pair_type'] == pair_type]
-
-        # Get data for each method
         narrow_data = pair_data[pair_data['method'] == 'Narrow Mass']
         narrow_range_data = pair_data[pair_data['method'] == 'Narrow Mass Range']
         twod_data = pair_data[pair_data['method'] == '2D Fit']
         oned_data = pair_data[pair_data['method'] == '1D Fit']
-
-        # Calculate ratios for 2D/Narrow Mass
         if len(twod_data) > 0 and len(narrow_data) > 0:
-            # Merge on centrality to ensure matching points
             merged_2d = pd.merge(twod_data, narrow_data, on='centrality', suffixes=('_2d', '_narrow'))
             if len(merged_2d) > 0:
                 ratio_2d = merged_2d['rawgamma_ss_2d'] / merged_2d['rawgamma_ss_narrow']
-                # Handle division by zero or near zero
                 ratio_2d = ratio_2d.replace([np.inf, -np.inf], np.nan)
                 ax.plot(merged_2d['centrality'], ratio_2d,
                        'o-', color='#e74c3c', alpha=0.8, linewidth=2.5, markersize=7,
                        label='2D Fit / Narrow Mass')
-
-        # Calculate ratios for 2D/Narrow Mass Range
         if len(twod_data) > 0 and len(narrow_range_data) > 0:
-            # Merge on centrality to ensure matching points
             merged_2d_range = pd.merge(twod_data, narrow_range_data, on='centrality', suffixes=('_2d', '_narrow_range'))
             if len(merged_2d_range) > 0:
                 ratio_2d_range = merged_2d_range['rawgamma_ss_2d'] / merged_2d_range['rawgamma_ss_narrow_range']
-                # Handle division by zero or near zero
                 ratio_2d_range = ratio_2d_range.replace([np.inf, -np.inf], np.nan)
                 ax.plot(merged_2d_range['centrality'], ratio_2d_range,
                        'o--', color='#9b59b6', alpha=0.8, linewidth=2.5, markersize=7,
                        label='2D Fit / Narrow Mass Range')
-
-        # Calculate ratios for 1D/Narrow Mass
         if len(oned_data) > 0 and len(narrow_data) > 0:
             merged_1d = pd.merge(oned_data, narrow_data, on='centrality', suffixes=('_1d', '_narrow'))
             if len(merged_1d) > 0:
@@ -373,8 +281,6 @@ def create_gamma_ratio_plots(data):
                 ax.plot(merged_1d['centrality'], ratio_1d,
                        's--', color='#3498db', alpha=0.8, linewidth=2.5, markersize=7,
                        label='1D Fit / Narrow Mass')
-
-        # Calculate ratios for 1D/Narrow Mass Range
         if len(oned_data) > 0 and len(narrow_range_data) > 0:
             merged_1d_range = pd.merge(oned_data, narrow_range_data, on='centrality', suffixes=('_1d', '_narrow_range'))
             if len(merged_1d_range) > 0:
@@ -383,20 +289,16 @@ def create_gamma_ratio_plots(data):
                 ax.plot(merged_1d_range['centrality'], ratio_1d_range,
                        's-.', color='#f39c12', alpha=0.8, linewidth=2.5, markersize=7,
                        label='1D Fit / Narrow Mass Range')
-
-        # Set subplot properties
         ax.set_title(f'{pair_type}', fontsize=14, fontweight='bold', pad=20)
         ax.set_xlabel('Centrality (%)', fontsize=12)
         ax.set_ylabel('Gamma SS Ratio', fontsize=12)
         ax.grid(True, alpha=0.3)
         ax.axhline(y=1, color='black', linestyle='-', alpha=0.5, linewidth=1)
-
         if i == 0:
-            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=10)
-
+            ax.legend(loc='best', fontsize=10)
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    plt.savefig('gamma_ratio_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('gamma_ratio_analysis.pdf', dpi=300, bbox_inches='tight')
     plt.show()
 
 def create_method_comparison_summary(data):
@@ -444,12 +346,12 @@ def create_method_comparison_summary(data):
         ax.set_ylabel('Average Value', fontsize=10)
         ax.set_xticks(np.arange(len(avg_by_pair)) + 0.25)
         ax.set_xticklabels(avg_by_pair.index, rotation=45, ha='right')
-        ax.legend(fontsize=8)
+        ax.legend(loc='best', fontsize=8)
         ax.grid(True, alpha=0.3)
         ax.axhline(y=0, color='black', linestyle='-', alpha=0.5)
 
     plt.tight_layout()
-    plt.savefig('method_comparison_summary.png', dpi=300, bbox_inches='tight')
+    plt.savefig('method_comparison_summary.pdf', dpi=300, bbox_inches='tight')
     plt.show()
 
 def create_centrality_trend_analysis(data):
@@ -490,10 +392,10 @@ def create_centrality_trend_analysis(data):
         ax.set_ylabel('Trend Indicator', fontsize=11)
         ax.grid(True, alpha=0.3)
         ax.axhline(y=0, color='black', linestyle='--', alpha=0.5)
-        ax.legend(fontsize=9)
+        ax.legend(loc='best', fontsize=9)
 
     plt.tight_layout()
-    plt.savefig('centrality_trend_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('centrality_trend_analysis.pdf', dpi=300, bbox_inches='tight')
     plt.show()
 
 def print_data_summary(data):
@@ -658,12 +560,12 @@ def create_weighted_delta_plots(data):
 
         # 设置图例
         if i == 0:
-            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)
+            ax.legend(loc='best', fontsize=9)
 
     # 调整布局
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    plt.savefig('weighted_delta_components.png', dpi=300, bbox_inches='tight')
+    plt.savefig('weighted_delta_components.pdf', dpi=300, bbox_inches='tight')
     plt.show()
 
     # 创建堆叠面积图 - 只对2D Fit方法
@@ -746,7 +648,7 @@ def create_stacked_area_plots(processed_data):
     # 调整布局
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    plt.savefig('stacked_weighted_delta_components.png', dpi=300, bbox_inches='tight')
+    plt.savefig('stacked_weighted_delta_components.pdf', dpi=300, bbox_inches='tight')
     plt.show()
 
 def main():
@@ -798,23 +700,23 @@ def main():
             print("提示: 确保至少有一个2D Fit或Narrow Mass Range方法的数据文件")
         print("\n分析完成！生成的图片文件:")
         if args.ss_only:
-            print("- delta_parameters_comparison_ss_only.png")
-            print("- gamma_parameters_comparison_ss_only.png")
+            print("- delta_parameters_comparison_ss_only.pdf")
+            print("- gamma_parameters_comparison_ss_only.pdf")
         else:
-            print("- delta_parameters_comparison.png")
-            print("- gamma_parameters_comparison.png")
-        print("- delta_ratio_analysis.png")
-        print("- gamma_ratio_analysis.png")
+            print("- delta_parameters_comparison.pdf")
+            print("- gamma_parameters_comparison.pdf")
+        print("- delta_ratio_analysis.pdf")
+        print("- gamma_ratio_analysis.pdf")
         # 检查文件是否存在
         import os
-        if os.path.exists("method_comparison_summary.png"):
-            print("- method_comparison_summary.png")
-        if os.path.exists("centrality_trend_analysis.png"):
-            print("- centrality_trend_analysis.png")
-        if os.path.exists("weighted_delta_components.png"):
-            print("- weighted_delta_components.png")
-        if os.path.exists("stacked_weighted_delta_components.png"):
-            print("- stacked_weighted_delta_components.png")
+        if os.path.exists("method_comparison_summary.pdf"):
+            print("- method_comparison_summary.pdf")
+        if os.path.exists("centrality_trend_analysis.pdf"):
+            print("- centrality_trend_analysis.pdf")
+        if os.path.exists("weighted_delta_components.pdf"):
+            print("- weighted_delta_components.pdf")
+        if os.path.exists("stacked_weighted_delta_components.pdf"):
+            print("- stacked_weighted_delta_components.pdf")
         if has_nmr:
             print("(注: 包含了Narrow Mass Range方法的分析结果)")
         else:

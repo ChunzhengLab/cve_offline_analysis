@@ -293,6 +293,13 @@ for current_mode in modes_to_run:
         current_output_csv = output_csv
         current_output_root = output_root
 
+    # 新增：提前创建ratio root文件（每个模式一个）
+    if args.fit_mode == 'all':
+        current_ratio_root = os.path.join(output_path, f"fit_obvs_plots_ratio_{current_mode}_{args.task}.root")
+    else:
+        current_ratio_root = os.path.join(output_path, f"fit_obvs_plots_ratio_{args.task}.root")
+    ratio_root_file = ROOT.TFile(current_ratio_root, "RECREATE")
+
     # 创建ROOT文件用于保存图形
     current_root_file = ROOT.TFile(current_output_root, "RECREATE")
     print(f"创建ROOT文件: {current_output_root}")
@@ -340,7 +347,7 @@ for current_mode in modes_to_run:
 
             # 创建可视化图形
             canvas_name = f"canvas_{pair_type}_cent_{centrality}_{current_mode}"
-            canvas = ROOT.TCanvas(canvas_name, f"{pair_type}, centrality={centrality}, mode={current_mode}", 1200, 600)
+            canvas = ROOT.TCanvas(canvas_name, f"{pair_type}, centrality={centrality}, mode={current_mode}", 600, 600)
             canvas.Divide(2, 2)
 
             # 获取质量范围
@@ -384,21 +391,72 @@ for current_mode in modes_to_run:
                 hist_gamma_orig.Fill(inv_mass_1_vals[i], inv_mass_2_vals[i], gamma_result['original_data'][i])
                 hist_gamma_fit.Fill(inv_mass_1_vals[i], inv_mass_2_vals[i], gamma_result['fit_data'][i])
 
-            # 绘制直方图
+            # 绘制直方图，先画fit前的，获取z范围，再画fit后的
             canvas.cd(1)
             hist_delta_orig.Draw("COLZ")
+            zmin_delta = hist_delta_orig.GetMinimum()
+            zmax_delta = hist_delta_orig.GetMaximum()
 
             canvas.cd(2)
+            hist_delta_fit.SetMinimum(zmin_delta)
+            hist_delta_fit.SetMaximum(zmax_delta)
             hist_delta_fit.Draw("COLZ")
 
             canvas.cd(3)
             hist_gamma_orig.Draw("COLZ")
+            zmin_gamma = hist_gamma_orig.GetMinimum()
+            zmax_gamma = hist_gamma_orig.GetMaximum()
 
             canvas.cd(4)
+            hist_gamma_fit.SetMinimum(zmin_gamma)
+            hist_gamma_fit.SetMaximum(zmax_gamma)
             hist_gamma_fit.Draw("COLZ")
 
             # 保存到ROOT文件
-            canvas.Write()
+            current_root_file.cd()
+            canvas.Write(canvas.GetName())
+            # 保存主图为pdf
+            plot_fit_dir = os.path.join(output_path, "plot_fit")
+            os.makedirs(plot_fit_dir, exist_ok=True)
+            pdf_path = os.path.join(plot_fit_dir, f"{canvas.GetName()}.pdf")
+            canvas.SaveAs(pdf_path)
+
+            # 新增：ratio图（delta和gamma）
+            # delta ratio
+            hist_delta_ratio = ROOT.TH2D(f"delta_ratio_{pair_type}_{centrality}_{current_mode}",
+                                         f"Delta Fit/Original Ratio;inv_mass_1;inv_mass_2",
+                                         nbins, mass1_min, mass1_max, nbins, mass2_min, mass2_max)
+            for i in range(len(inv_mass_1_vals)):
+                orig = delta_result['original_data'][i]
+                fit = delta_result['fit_data'][i]
+                ratio = fit / orig if orig != 0 else 0
+                hist_delta_ratio.Fill(inv_mass_1_vals[i], inv_mass_2_vals[i], ratio)
+            canvas_delta_ratio = ROOT.TCanvas(f"canvas_delta_ratio_{pair_type}_cent_{centrality}_{current_mode}",
+                                             f"Delta Ratio, {pair_type}, centrality={centrality}, mode={current_mode}", 600, 600)
+            hist_delta_ratio.Draw("COLZ")
+            ratio_root_file.cd()
+            canvas_delta_ratio.Write(canvas_delta_ratio.GetName())
+            # 保存delta ratio为pdf
+            pdf_path_delta = os.path.join(plot_fit_dir, f"{canvas_delta_ratio.GetName()}.pdf")
+            canvas_delta_ratio.SaveAs(pdf_path_delta)
+
+            # gamma ratio
+            hist_gamma_ratio = ROOT.TH2D(f"gamma_ratio_{pair_type}_{centrality}_{current_mode}",
+                                         f"Rawgamma Fit/Original Ratio;inv_mass_1;inv_mass_2",
+                                         nbins, mass1_min, mass1_max, nbins, mass2_min, mass2_max)
+            for i in range(len(inv_mass_1_vals)):
+                orig = gamma_result['original_data'][i]
+                fit = gamma_result['fit_data'][i]
+                ratio = fit / orig if orig != 0 else 0
+                hist_gamma_ratio.Fill(inv_mass_1_vals[i], inv_mass_2_vals[i], ratio)
+            canvas_gamma_ratio = ROOT.TCanvas(f"canvas_gamma_ratio_{pair_type}_cent_{centrality}_{current_mode}",
+                                             f"Rawgamma Ratio, {pair_type}, centrality={centrality}, mode={current_mode}", 600, 600)
+            hist_gamma_ratio.Draw("COLZ")
+            ratio_root_file.cd()
+            canvas_gamma_ratio.Write(canvas_gamma_ratio.GetName())
+            # 保存gamma ratio为pdf
+            pdf_path_gamma = os.path.join(plot_fit_dir, f"{canvas_gamma_ratio.GetName()}.pdf")
+            canvas_gamma_ratio.SaveAs(pdf_path_gamma)
 
             # 清理内存
             canvas.Delete()
@@ -415,6 +473,8 @@ for current_mode in modes_to_run:
 
     # 关闭ROOT文件
     current_root_file.Close()
+    # 新增：关闭ratio root文件
+    ratio_root_file.Close()
 
     # 保存拟合结果到CSV
     if current_fit_results:

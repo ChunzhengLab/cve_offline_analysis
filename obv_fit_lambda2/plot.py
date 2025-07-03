@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 读取数据
-df = pd.read_csv('fit_obv.csv')
+df = pd.read_csv('LHC18q/Lambda/finalise_default.csv')
 
 # 定义粒子对类型和颜色
 pair_types = ['LambdaLambda', 'LambdaLambdaBar', 'LambdaBarLambda', 'LambdaBarLambdaBar']

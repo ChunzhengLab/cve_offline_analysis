@@ -21,7 +21,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "RtypesCore.h"
 #include "TF1.h"
 #include "TCanvas.h"
 #include "TColor.h"
@@ -33,6 +32,8 @@
 #include "TStyle.h"
 #include "TLatex.h"
 #include "TPaveText.h"
+#include "TROOT.h"
+#include "TMarker.h"
 
 // ──────────────────────────────────────────────────────────────────────────
 //  Style configuration - direct color and marker settings for easy modification
@@ -54,50 +55,53 @@ double alice_y2 = 0.85;                  // Top position
 // Legend positions (all modes)
 double legend_Delta_SSOS_x1 = 0.19;      // Delta SSOS legend left
 double legend_Delta_SSOS_y1 = 0.19;      // Delta SSOS legend bottom
-double legend_Delta_SSOS_x2 = 0.65;      // Delta SSOS legend right
+double legend_Delta_SSOS_x2 = 0.50;      // Delta SSOS legend right
 double legend_Delta_SSOS_y2 = 0.40;      // Delta SSOS legend top
 
 double legend_Delta_Del_x1 = 0.19;       // Delta Del legend left
 double legend_Delta_Del_y1 = 0.44;       // Delta Del legend bottom
-double legend_Delta_Del_x2 = 0.65;       // Delta Del legend right
+double legend_Delta_Del_x2 = 0.45;       // Delta Del legend right
 double legend_Delta_Del_y2 = 0.65;       // Delta Del legend top
 
 double legend_Gamma_SSOS_x1 = 0.19;      // Gamma SSOS legend left
 double legend_Gamma_SSOS_y1 = 0.19;      // Gamma SSOS legend bottom
-double legend_Gamma_SSOS_x2 = 0.65;      // Gamma SSOS legend right
+double legend_Gamma_SSOS_x2 = 0.45;      // Gamma SSOS legend right
 double legend_Gamma_SSOS_y2 = 0.40;      // Gamma SSOS legend top
 
 double legend_Gamma_Del_x1 = 0.19;       // Gamma Del legend left
 double legend_Gamma_Del_y1 = 0.44;       // Gamma Del legend bottom
-double legend_Gamma_Del_x2 = 0.65;       // Gamma Del legend right
+double legend_Gamma_Del_x2 = 0.45;       // Gamma Del legend right
 double legend_Gamma_Del_y2 = 0.65;       // Gamma Del legend top
 
 // Color settings for different particle pairs
-int color_LambdaProton = kRed+1;         // Lambda-Proton color
-int color_LambdaLambda = kGreen+3;       // Lambda-Lambda color
-int color_LambdaHadron = kBlue+1;        // Lambda-Hadron color
-int color_HadronHadron_fill = kOrange+1; // Hadron-Hadron fill color
-int color_HadronHadron_OS = kCyan+2;     // Hadron-Hadron opposite sign color
+int color_LambdaProton = 632+1;         // kRed+1
+int color_LambdaLambda = 16;
+int color_LambdaHadron = 600+1;         // kBlue+1
+int color_HadronHadron_fill = 800+1;    // kOrange+1
+int color_HadronHadron_OS = 432+2;      // kCyan+2
 
 // Fill transparency
 double alpha_HH = 0.5;                   // Transparency for Hadron-Hadron fills
 int fill_style = 1000;                   // Fill style for error bands
 
 // Marker settings
-int marker_LP_SS = kOpenSquare;          // Lambda-Proton Same Sign marker
-int marker_LP_OS = kFullSquare;          // Lambda-Proton Opposite Sign marker
-int marker_LP_Del = kFullSquare;         // Lambda-Proton Delta marker
+int marker_LP_SS = 25;          // kOpenSquare
+int marker_LP_OS = 21;          // kFullSquare
+int marker_LP_Del = 21;         // kFullSquare
 
-int marker_LL_SS = kOpenCircle;          // Lambda-Lambda SS marker
-int marker_LL_OS = kFullCircle;          // Lambda-Lambda OS marker
-int marker_LL_Del = kFullCircle;         // Lambda-Lambda Delta marker
+int marker_LL_SS = 24;          // kOpenCircle
+int marker_LL_OS = 20;          // kFullCircle
+int marker_LL_Del = 20;         // kFullCircle
 
-int marker_LH_SS = kOpenTriangleUp;      // Lambda-Hadron SS marker
-int marker_LH_OS = kFullTriangleDown;    // Lambda-Hadron OS marker
-int marker_LH_Del = kFullTriangleUp;     // Lambda-Hadron Delta marker
+int marker_LH_SS = kOpenTriangleUp;          // kOpenTriangleUp
+int marker_LH_OS = kFullTriangleDown;          // kFullTriangleDown
+int marker_LH_Del = kFullTriangleUp;         // kFullTriangleUp
 
 // Drawing options
 bool draw_HH_in_SSOS = false;            // Whether to draw hadron-hadron in SSOS mode
+
+// 新增：控制Lambda-Lambda合并点显示
+bool show_merged4060 = true; // true: 只画5,15,25,35,50; false: 只画5,15,25,35,45,55
 
 // ──────────────────────────────────────────────────────────────────────────
 //  Marker and color reference guide (modify as needed)
@@ -122,10 +126,10 @@ bool draw_HH_in_SSOS = false;            // Whether to draw hadron-hadron in SSO
 // ──────────────────────────────────────────────────────────────────────────
 namespace FrameConfig {
 struct Range { double xmin, ymin, xmax, ymax; };
-constexpr Range Delta_SSOS { 0. , -0.015 , 60. ,  0.0150};
-constexpr Range Delta_Del  { 0. , -0.002 , 60. ,  0.029};
-constexpr Range Gamma_SSOS { 0. , -0.0038,  60. ,  0.0025};
-constexpr Range Gamma_Del  { 0. , -0.0005, 60. ,  0.0048};
+constexpr Range Delta_SSOS { 0. , -0.011 , 60. ,  0.011};
+constexpr Range Delta_Del  { 0. , -0.002 , 60. ,  0.017};
+constexpr Range Gamma_SSOS { 0. , -0.0038, 60. ,  0.0021};
+constexpr Range Gamma_Del  { 0. , -0.0005, 60. ,  0.004};
 
 inline const Range& get(const TString& obv, const TString& mode)
 {
@@ -198,10 +202,21 @@ vector<PlotData> ReadCSVData(const string& fn)
 }
 
 TH1D* CreateHist(const vector<PlotData>& data,const string& part,const string& pair,
-                 const string& obs,const string& err,double shift=0)
+                 const string& obs,const string& err,double shift=0,bool isLambdaLambda=false,bool showMerged=false)
 {
-    vector<double> cx, val, errv;
+    std::vector<double> cx, val, errv;
     for(const auto& p:data) if(p.particle==part && p.pair_type==pair){
+        int cent = int(p.centrality+0.5);
+        // 只对Lambda-Lambda做特殊筛选
+        if(isLambdaLambda) {
+            if(showMerged) {
+                // 只保留5,15,25,35,50
+                if(!(cent==5||cent==15||cent==25||cent==35||cent==50)) continue;
+            } else {
+                // 只保留5,15,25,35,45,55
+                if(!(cent==5||cent==15||cent==25||cent==35||cent==45||cent==55)) continue;
+            }
+        }
         cx.push_back(p.centrality);
         if(obs=="delta"){ val.push_back(p.delta);
             errv.push_back(err=="stat"?p.delta_err:p.delta_syst_err);}
@@ -212,9 +227,65 @@ TH1D* CreateHist(const vector<PlotData>& data,const string& part,const string& p
     string n=part+"_"+pair+"_"+obs+"_"+err;
     auto* h=new TH1D(n.c_str(),n.c_str(),(int)cx.size(),0,60);
     for(size_t i=0;i<cx.size();++i){
-        int b=h->FindBin(cx[i]+shift);
+        double xval = cx[i];
+        // 只对Lambda-Lambda做shift控制
+        if(isLambdaLambda) {
+            if(showMerged) {
+                // 不shift
+            } else {
+                xval += 2.0; // shift右移
+            }
+        } else {
+            xval += shift;
+        }
+        int b=h->FindBin(xval);
         h->SetBinContent(b,val[i]); h->SetBinError(b,errv[i]); }
     return h;
+}
+
+TH1D* CreateHist_LL_normal(const vector<PlotData>& data,const string& pair,
+                 const string& obs,const string& err,double shift=0)
+{
+    // 只保留5,15,25,35
+    std::vector<double> cx, val, errv;
+    for(const auto& p:data) if(p.particle=="Lambda" && p.pair_type==pair){
+        int cent = int(p.centrality+0.5);
+        if(!(cent==5||cent==15||cent==25||cent==35)) continue;
+        double xval = p.centrality + shift;
+        cx.push_back(xval);
+        if(obs=="delta"){ val.push_back(p.delta);
+            errv.push_back(err=="stat"?p.delta_err:p.delta_syst_err);}
+        else {            val.push_back(p.gamma);
+            errv.push_back(err=="stat"?p.gamma_err:p.gamma_syst_err);}
+    }
+    if(cx.empty()) return nullptr;
+    std::vector<double> bins;
+    for(auto c : cx) bins.push_back(c-0.5);
+    bins.push_back(cx.back()+0.5);
+    string n="Lambda_"+pair+"_"+obs+"_"+err+"_normal";
+    auto* h=new TH1D(n.c_str(),n.c_str(),6,0,60);
+    for(size_t i=0;i<cx.size();++i){
+        h->SetBinContent(i+1,val[i]);
+        h->SetBinError(i+1,errv[i]);
+    }
+    return h;
+}
+
+TH1D* CreateHist_LL_merged50(const vector<PlotData>& data,const string& pair,
+                 const string& obs,const string& err)
+{
+    // 只保留50
+    for(const auto& p:data) if(p.particle=="Lambda" && p.pair_type==pair){
+        int cent = int(p.centrality+0.5);
+        if(cent==50){
+            string n="Lambda_"+pair+"_"+obs+"_"+err+"_merged50";
+            auto* h=new TH1D(n.c_str(),n.c_str(),1,45,55);
+            h->SetBinContent(1, obs=="delta"?p.delta:p.gamma);
+            h->SetBinError(1, err=="stat"?(obs=="delta"?p.delta_err:p.gamma_err):(obs=="delta"?p.delta_syst_err:p.gamma_syst_err));
+            return h;
+        }
+    }
+    return nullptr;
 }
 
 // No shift is applied to histograms on x-axis
@@ -265,20 +336,39 @@ void fig_intg()
          *sDel=CreateHist(data,"Proton","Del",obs,"syst");
 
     // Lambda–Lambda
-    auto *hSS_LL=CreateHist(data,"Lambda","SS",obs,"stat"),
-         *hOS_LL=CreateHist(data,"Lambda","OS",obs,"stat"),
-         *hDel_LL=CreateHist(data,"Lambda","Del",obs,"stat"),
-         *sSS_LL=CreateHist(data,"Lambda","SS",obs,"syst"),
-         *sOS_LL=CreateHist(data,"Lambda","OS",obs,"syst"),
-         *sDel_LL=CreateHist(data,"Lambda","Del",obs,"syst");
+    TH1D *hSS_LL=nullptr, *hOS_LL=nullptr, *hDel_LL=nullptr;
+    TH1D *sSS_LL=nullptr, *sOS_LL=nullptr, *sDel_LL=nullptr;
+    TH1D *hSS_LL_50=nullptr, *hOS_LL_50=nullptr, *hDel_LL_50=nullptr;
+    TH1D *sSS_LL_50=nullptr, *sOS_LL_50=nullptr, *sDel_LL_50=nullptr;
+    if(show_merged4060){
+        hSS_LL = CreateHist_LL_normal(data,"SS",obs,"stat",0);
+        hOS_LL = CreateHist_LL_normal(data,"OS",obs,"stat",0);
+        hDel_LL = CreateHist_LL_normal(data,"Del",obs,"stat",0);
+        sSS_LL = CreateHist_LL_normal(data,"SS",obs,"syst",0);
+        sOS_LL = CreateHist_LL_normal(data,"OS",obs,"syst",0);
+        sDel_LL = CreateHist_LL_normal(data,"Del",obs,"syst",0);
+        hSS_LL_50 = CreateHist_LL_merged50(data,"SS",obs,"stat");
+        hOS_LL_50 = CreateHist_LL_merged50(data,"OS",obs,"stat");
+        hDel_LL_50 = CreateHist_LL_merged50(data,"Del",obs,"stat");
+        sSS_LL_50 = CreateHist_LL_merged50(data,"SS",obs,"syst");
+        sOS_LL_50 = CreateHist_LL_merged50(data,"OS",obs,"syst");
+        sDel_LL_50 = CreateHist_LL_merged50(data,"Del",obs,"syst");
+    }else{
+        hSS_LL=CreateHist(data,"Lambda","SS",obs,"stat",0,true,false);
+        hOS_LL=CreateHist(data,"Lambda","OS",obs,"stat",0,true,false);
+        hDel_LL=CreateHist(data,"Lambda","Del",obs,"stat",0,true,false);
+        sSS_LL=CreateHist(data,"Lambda","SS",obs,"syst",0,true,false);
+        sOS_LL=CreateHist(data,"Lambda","OS",obs,"syst",0,true,false);
+        sDel_LL=CreateHist(data,"Lambda","Del",obs,"syst",0,true,false);
+    }
 
     // Lambda–Hadron
-    auto *hSS_LH=CreateHist(data,"Hadron","SS",obs,"stat"),
-         *hOS_LH=CreateHist(data,"Hadron","OS",obs,"stat"),
-         *hDel_LH=CreateHist(data,"Hadron","Del",obs,"stat"),
-         *sSS_LH=CreateHist(data,"Hadron","SS",obs,"syst"),
-         *sOS_LH=CreateHist(data,"Hadron","OS",obs,"syst"),
-         *sDel_LH=CreateHist(data,"Hadron","Del",obs,"syst");
+    auto *hSS_LH=CreateHist(data,"Hadron","SS",obs,"stat",-2.0),
+         *hOS_LH=CreateHist(data,"Hadron","OS",obs,"stat",-2.0),
+         *hDel_LH=CreateHist(data,"Hadron","Del",obs,"stat",-2.0),
+         *sSS_LH=CreateHist(data,"Hadron","SS",obs,"syst",-2.0),
+         *sOS_LH=CreateHist(data,"Hadron","OS",obs,"syst",-2.0),
+         *sDel_LH=CreateHist(data,"Hadron","Del",obs,"syst",-2.0);
 
     // Hadron–Hadron - Reading from external files
     TGraphAsymmErrors *hSS_HH = nullptr, *hOS_HH = nullptr, *hDel_HH = nullptr;
@@ -317,6 +407,9 @@ void fig_intg()
     if(hSS_LL){SetStyle(hSS_LL ,color_LambdaLambda,marker_LL_SS ,markerSize); if(sSS_LL)SetStyle(sSS_LL,hSS_LL);}
     if(hOS_LL){SetStyle(hOS_LL ,color_LambdaLambda,marker_LL_OS ,markerSize); if(sOS_LL)SetStyle(sOS_LL,hOS_LL);}
     if(hDel_LL){SetStyle(hDel_LL,color_LambdaLambda,marker_LL_Del,markerSize); if(sDel_LL)SetStyle(sDel_LL,hDel_LL);}
+    if(hSS_LL_50){SetStyle(hSS_LL_50 ,color_LambdaLambda,marker_LL_SS ,markerSize); if(sSS_LL_50)SetStyle(sSS_LL_50,hSS_LL_50);}
+    if(hOS_LL_50){SetStyle(hOS_LL_50 ,color_LambdaLambda,marker_LL_OS ,markerSize); if(sOS_LL_50)SetStyle(sOS_LL_50,hOS_LL_50);}
+    if(hDel_LL_50){SetStyle(hDel_LL_50,color_LambdaLambda,marker_LL_Del,markerSize); if(sDel_LL_50)SetStyle(sDel_LL_50,hDel_LL_50);}
 
     if(hSS_LH){SetStyle(hSS_LH ,color_LambdaHadron,marker_LH_SS ,markerSize); if(sSS_LH)SetStyle(sSS_LH,hSS_LH);}
     if(hOS_LH){SetStyle(hOS_LH ,color_LambdaHadron,marker_LH_OS ,markerSize); if(sOS_LH)SetStyle(sOS_LH,hOS_LH);}
@@ -367,20 +460,24 @@ void fig_intg()
 
         if(sSS) sSS->Draw("E2,same"); if(sOS) sOS->Draw("E2,same");
         if(sSS_LL) sSS_LL->Draw("E2,same"); if(sOS_LL) sOS_LL->Draw("E2,same");
+        if(sSS_LL_50) sSS_LL_50->Draw("E2,same"); if(sOS_LL_50) sOS_LL_50->Draw("E2,same");
         if(sSS_LH) sSS_LH->Draw("E2,same"); if(sOS_LH) sOS_LH->Draw("E2,same");
 
         if(hSS) hSS->Draw("E X0,same"); if(hOS) hOS->Draw("E X0,same");
         if(hSS_LL) hSS_LL->Draw("E X0,same"); if(hOS_LL) hOS_LL->Draw("E X0,same");
+        if(hSS_LL_50) hSS_LL_50->Draw("E X0,same"); if(hOS_LL_50) hOS_LL_50->Draw("E X0,same");
         if(hSS_LH) hSS_LH->Draw("E X0,same"); if(hOS_LH) hOS_LH->Draw("E X0,same");
     }else{
         if(hDel_HH) hDel_HH->Draw("E3,same");
 
         if(sDel) sDel->Draw("E2,same");
         if(sDel_LL) sDel_LL->Draw("E2,same");
+        if(sDel_LL_50) sDel_LL_50->Draw("E2,same");
         if(sDel_LH) sDel_LH->Draw("E2,same");
 
         if(hDel) hDel->Draw("E X0,same");
         if(hDel_LL) hDel_LL->Draw("E X0,same");
+        if(hDel_LL_50) hDel_LL_50->Draw("E X0,same");
         if(hDel_LH) hDel_LH->Draw("E X0,same");
     }
 

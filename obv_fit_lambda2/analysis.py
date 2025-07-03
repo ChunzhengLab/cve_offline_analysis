@@ -120,7 +120,8 @@ def run_analysis_pipeline(
     reso_file: str = "./resolutions.csv",
     fs_min: Optional[float] = None,
     fs_max: Optional[float] = None,
-    no_read_frac: bool = False
+    no_read_frac: bool = False,
+    merge4060: bool = False
 ) -> bool:
     """执行完整的分析流程"""
     # 构建基本参数
@@ -148,6 +149,8 @@ def run_analysis_pipeline(
             "-o", output_dir,
             "-m", flatten_mode
         ]
+        if merge4060:
+            flatten_cmd.append("--merge4060")
         if not run_command(flatten_cmd, f"{task}/flatten"):
             print(f"[{task}] flatten_data.py 执行失败")
             success = False
@@ -272,6 +275,8 @@ def main():
                        help="信号分数最小值")
     parser.add_argument("--fs-max", type=float, default=None,
                        help="信号分数最大值")
+    parser.add_argument('--merge4060', action='store_true',
+                       help='将中心度45和55的结果合并为50（传递给flatten_data.py）')
 
     args = parser.parse_args()
 
@@ -347,7 +352,8 @@ def main():
             reso_file=args.reso_file,
             fs_min=args.fs_min,
             fs_max=args.fs_max,
-            no_read_frac=args.no_read_frac
+            no_read_frac=args.no_read_frac,
+            merge4060=args.merge4060
         )
 
         results[task] = success

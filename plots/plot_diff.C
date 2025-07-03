@@ -333,7 +333,7 @@ void fig_diff()
         histograms["hOS"] = vector<TH1D*>(nBins, nullptr);
         histograms["sSS"] = vector<TH1D*>(nBins, nullptr);
         histograms["sOS"] = vector<TH1D*>(nBins, nullptr);
-        
+
         for(int i = 0; i < nBins; i++) {
             double bin_value = i + 0.5; // Convert to 0.5, 1.5, 2.5
             histograms["hSS"][i] = CreateHist(data, DiffType.Data(), bin_value, "SS", obs, "stat");
@@ -344,7 +344,7 @@ void fig_diff()
     } else {
         histograms["hDel"] = vector<TH1D*>(nBins, nullptr);
         histograms["sDel"] = vector<TH1D*>(nBins, nullptr);
-        
+
         for(int i = 0; i < nBins; i++) {
             double bin_value = i + 0.5; // Convert to 0.5, 1.5, 2.5
             histograms["hDel"][i] = CreateHist(data, DiffType.Data(), bin_value, "Del", obs, "stat");
@@ -356,7 +356,7 @@ void fig_diff()
     for(int i = 0; i < nBins; i++) {
         int colorIndex = i;
         int markerIndex = i;
-        
+
         if(SSOSDel=="SSOS") {
             if(histograms["hSS"][i]) {
                 SetStyle(histograms["hSS"][i], GetColor(i), GetMarkerStyle("SS", i), markerSize);
@@ -386,7 +386,7 @@ void fig_diff()
     if(DiffType=="DEta") {
         double dx_bin0 = -1.5; // 左移
         double dx_bin1 = 1.5;  // 右移
-        
+
         if(SSOSDel=="SSOS") {
             ShiftAxis(histograms["hSS"][0], dx_bin0); ShiftAxis(histograms["sSS"][0], dx_bin0);
             ShiftAxis(histograms["hOS"][0], dx_bin0); ShiftAxis(histograms["sOS"][0], dx_bin0);
@@ -400,7 +400,7 @@ void fig_diff()
         double dx_bin0 = -2.0; // 左移
         double dx_bin1 = 0.0;  // 中间不移动
         double dx_bin2 = 2.0;  // 右移
-        
+
         if(SSOSDel=="SSOS") {
             ShiftAxis(histograms["hSS"][0], dx_bin0); ShiftAxis(histograms["sSS"][0], dx_bin0);
             ShiftAxis(histograms["hOS"][0], dx_bin0); ShiftAxis(histograms["sOS"][0], dx_bin0);
@@ -461,14 +461,14 @@ void fig_diff()
     if(SSOSDel=="SSOS") {
         for(size_t i = 0; i < histograms["hOS"].size(); i++) {
             if(histograms["hOS"][i]) {
-                leg->AddEntry(histograms["hOS"][i],
-                              (GetBinLabel(DiffType.Data(), i)).c_str(), "PE");
+                string label = "OS " + GetBinLabel(DiffType.Data(), i);
+                leg->AddEntry(histograms["hOS"][i], label.c_str(), "PE");
             }
         }
         for(size_t i = 0; i < histograms["hSS"].size(); i++) {
             if(histograms["hSS"][i]) {
-                leg->AddEntry(histograms["hSS"][i],
-                              (GetBinLabel(DiffType.Data(), i)).c_str(), "PE");
+                string label = "SS " + GetBinLabel(DiffType.Data(), i);
+                leg->AddEntry(histograms["hSS"][i], label.c_str(), "PE");
             }
         }
     } else {

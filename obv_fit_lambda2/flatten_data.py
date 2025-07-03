@@ -17,6 +17,8 @@ parser.add_argument('-d', '--dataset', type=str, default=None,
 parser.add_argument('-m', '--mode', type=str, default="eff_cali",
                    choices=["raw_mass", "eff_cali"],
                    help='处理模式：raw_mass-使用原始质量，eff_cali-使用delta3的bin entries作为计数')
+parser.add_argument('--merge4060', action='store_true',
+                   help='将中心度45和55的结果合并为50')
 
 args = parser.parse_args()
 
@@ -213,8 +215,88 @@ for (diff_type, pair_type), group in valid_combos.items():
     all_records.extend(records)
 
 print(f"\n总共收集到 {len(all_records)} 条记录")
-if all_records:
-    print("第一条记录的键:", list(all_records[0].keys()))
+
+def merge_4060_records(records, dataset):
+    # 只对18q/18r数据集生效
+    if not (('18q' in dataset) or ('18r' in dataset)):
+        return records
+    # 权重
+    if '18r' in dataset:
+        weight = 1883. / 445
+    elif '18q' in dataset:
+        weight = 1613. / 638
+    else:
+        return records
+    # 按(inv_mass_1_center, inv_mass_2_center, pair_type)分组
+    from collections import defaultdict
+    group45 = defaultdict(list)
+    group55 = defaultdict(list)
+    others = []
+    for rec in records:
+        cent = rec['centrality']
+        key = (rec['inv_mass_1_center'], rec['inv_mass_2_center'], rec['pair_type'])
+        if abs(cent - 45) < 1e-3:
+            group45[key].append(rec)
+        elif abs(cent - 55) < 1e-3:
+            group55[key].append(rec)
+        else:
+            others.append(rec)
+    # 合并
+    merged = []
+    for key in set(group45.keys()).union(group55.keys()):
+        rec45s = group45.get(key, [])
+        rec55s = group55.get(key, [])
+        # 只合并完全匹配的bin
+        if rec45s and rec55s:
+            rec45 = rec45s[0]
+            rec55 = rec55s[0]
+            c45 = rec45['inv_mass_counts']
+            c55 = rec55['inv_mass_counts'] * weight
+            total = c45 + c55
+            # delta
+            delta = (rec45['delta'] * c45 + rec55['delta'] * c55) / total if total > 0 else 0
+            delta_err = (rec45['delta_err'] * c45 + rec55['delta_err'] * c55) / total if total > 0 else 0
+            # rawgamma
+            rawgamma = (rec45['rawgamma'] * c45 + rec55['rawgamma'] * c55) / total if total > 0 else 0
+            rawgamma_err = (rec45['rawgamma_err'] * c45 + rec55['rawgamma_err'] * c55) / total if total > 0 else 0
+            merged.append({
+                'centrality': 50,
+                'pair_type': rec45['pair_type'],
+                'inv_mass_1_center': rec45['inv_mass_1_center'],
+                'inv_mass_2_center': rec45['inv_mass_2_center'],
+                'inv_mass_counts': total,
+                'delta': delta,
+                'delta_err': delta_err,
+                'rawgamma': rawgamma,
+                'rawgamma_err': rawgamma_err
+            })
+        elif rec45s:
+            # 只有45
+            rec45 = rec45s[0]
+            merged.append({**rec45, 'centrality': 50})
+        elif rec55s:
+            # 只有55
+            rec55 = rec55s[0]
+            c55 = rec55['inv_mass_counts'] * weight
+            merged.append({
+                'centrality': 50,
+                'pair_type': rec55['pair_type'],
+                'inv_mass_1_center': rec55['inv_mass_1_center'],
+                'inv_mass_2_center': rec55['inv_mass_2_center'],
+                'inv_mass_counts': c55,
+                'delta': rec55['delta'],
+                'delta_err': rec55['delta_err'],
+                'rawgamma': rec55['rawgamma'],
+                'rawgamma_err': rec55['rawgamma_err']
+            })
+    return records + merged
+
+if args.merge4060:
+    print("\n启用--merge4060功能，正在合并中心度45和55的数据...")
+    all_records = merge_4060_records(all_records, args.dataset)
+    print(f"合并后记录总数: {len(all_records)}")
+    if all_records:
+        print("第一条记录的键:", list(all_records[0].keys()))
 
 df = pd.DataFrame(all_records)
 print("\nDataFrame的列:", df.columns.tolist())
