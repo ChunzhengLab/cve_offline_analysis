@@ -101,7 +101,7 @@ int marker_LH_Del = kFullTriangleUp;         // kFullTriangleUp
 bool draw_HH_in_SSOS = false;            // Whether to draw hadron-hadron in SSOS mode
 
 // 新增：控制Lambda-Lambda合并点显示
-bool show_merged4060 = true; // true: 只画5,15,25,35,50; false: 只画5,15,25,35,45,55
+bool show_merged4060 = false; // true: 只画5,15,25,35,50; false: 只画5,15,25,35,45,55
 
 // ──────────────────────────────────────────────────────────────────────────
 //  Marker and color reference guide (modify as needed)
